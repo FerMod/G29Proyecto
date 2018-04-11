@@ -59,6 +59,8 @@ extern int TactilTocada();
 // Variables globales
 
 extern int estado;
+extern int ticks;
+extern int coreTimer;
 
 
 

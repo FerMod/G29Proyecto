@@ -32,7 +32,6 @@ int TactilTocada() {
 //---------------------------------------------------
 
 int estado;
-
 //---------------------------------------------------
 // main
 //---------------------------------------------------
@@ -81,40 +80,40 @@ int main() {
 	iprintf("\x1b[04;00H  |__________________________|  ");
 
 //---------------------------------------------------
-		
-	interrupciones();
 
+	interrupciones();
 	estado = INICIO;
-    while(estado != FIN) {
+	while(estado != FIN) {
 		switch(TeclaPulsada()) {
 			case A:
-				iprintf("A\n");
-				break;
+			iprintf("A\n");
+			break;
 			case START:
-				iprintf("START\n");
-				break;
+			iprintf("START\n");
+			break;
 			case DERECHA:
-				iprintf("DERECHA\n");
-				break;
+			iprintf("DERECHA\n");
+			break;
 			case ARRIBA:
-				iprintf("ARRIBA\n");
-				break;
+			iprintf("ARRIBA\n");
+			break;
 			case ABAJO:
-				iprintf("ABAJO\n");
-				break;
+			iprintf("ABAJO\n");
+			break;
 			case R:
-				iprintf("R\n");
-				break;
+			iprintf("R\n");
+			break;
 			case L:
-				iprintf("L\n");
-				break;
+			iprintf("L\n");
+			break;
 			default:
-				break;
+			break;
 		}
+
 
     } // while
 
-	iprintf("Fin de programa");
+    iprintf("Fin de programa");
 
 } //main
 
