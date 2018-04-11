@@ -1,0 +1,4 @@
+make
+nocashgba G29-proyecto.nds
+
+make && nocashgba G29-proyecto.nds
