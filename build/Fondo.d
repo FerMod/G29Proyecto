@@ -1,1 +1,0 @@
-Fondo.o: Fondo.s
