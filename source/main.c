@@ -43,6 +43,28 @@ void debugPressedKey(char *key, char *type) {
 	iprintf("\x1b[16;00H %s(%s)", key, type);
 }
 
+void inicio() {
+	if(TactilTocada()) {
+		if(isStartTextVisible()) {
+			hideStartText();
+		}
+		iprintf("Pantalla tocada\n");
+		estado = PARTIDA;
+	}
+}
+
+void partida() {
+	
+}
+
+void finPartida() {
+	
+}
+
+void estadoFin() {
+	
+}
+
 int main() {
 
 	/* Definir variables */	
@@ -91,7 +113,7 @@ int main() {
 
 	estado = INICIO;
 	while(estado != FIN) {
-		// Temp
+		// Temp ////
 		switch(TeclaPulsada()) {
 			case A:
 				debugPressedKey("A", "encuesta");
@@ -115,9 +137,11 @@ int main() {
 				debugPressedKey("L", "encuesta");
 				break;
 		}
-	
+		//////////
+
 		switch(estado) {
 			case INICIO:
+				inicio();
 				break;
 			case PARTIDA:
 				break;
@@ -132,38 +156,6 @@ int main() {
     iprintf("Fin de programa");
 
 } //main
-
-void inicio() {
-	if(TactilTocada()) {
-		if(isStartTextVisible()) {
-			hideStartText();
-		}
-		iprintf("Pantalla tocada\n");
-		estado = PARTIDA;
-	}
-}
-
-void partida() {
-	
-}
-
-void finPartida() {
-	
-}
-
-void estadoFin() {
-	
-}
-
-// void mostrarTextoInicio() {
-// 	iprintf("\x1b[12;05H %s ", "Para comenzar, toque");
-// 	iprintf("\x1b[13;06H %s ",  "la pantalla tactil");
-// }
-
-// void ocultarTextoInicio() {
-// 	iprintf("\x1b[12;00H%32s", "");
-// 	iprintf("\x1b[13;00H%32s", "");
-// }
 
 /*
 switch(TeclaPulsada()) {
