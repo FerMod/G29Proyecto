@@ -35,7 +35,6 @@ defines.h
 // Esta funcion consulta si se ha tocado la pantalla tactil
 extern int TactilTocada();
 
-
 // Para no liarse con los numeros a cada teclas se le ha asignado un nombre
 
 #define A			0 
@@ -57,10 +56,9 @@ extern int TactilTocada();
 
 
 // Variables globales
-
 extern int estado;
 extern int ticks;
-extern int coreTimer;
+extern int timer;
 
-
-
+// Funcion temporal, para debugear la tecla pulsada 
+extern void debugPressedKey(char *key, char *type);
