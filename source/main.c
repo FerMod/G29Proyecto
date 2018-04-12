@@ -15,6 +15,7 @@ dovoto y otro de Jaeden Amero
 #include "rutservs.h"
 #include "teclado.h"
 #include "temporizadores.h"
+#include "screenText.h"
 
 //---------------------------------------------------
 // Funciones
@@ -25,16 +26,22 @@ int TactilTocada() {
 	touchPosition pos_pantalla;
 	touchRead(&pos_pantalla);
 	return !(pos_pantalla.px==0 && pos_pantalla.py==0);
-} 
+}
 
 //---------------------------------------------------
 // Variables globales
 //---------------------------------------------------
 
 int estado;
+int timer;
+
 //---------------------------------------------------
 // main
 //---------------------------------------------------
+
+void debugPressedKey(char *key, char *type) {
+	iprintf("\x1b[16;00H %s(%s)", key, type);
+}
 
 int main() {
 
@@ -74,42 +81,51 @@ int main() {
 	
 	/* Incluimos la siguiente cabecera para que cada grupo la modifique con
 	su numero de grupo "xx" en "Gxx". */
-	iprintf("\x1b[01;00H   __________________________   ");
-	iprintf("\x1b[02;00H  |                          |  ");
-	iprintf("\x1b[03;00H  | EC 17/18           G29   |  ");
-	iprintf("\x1b[04;00H  |__________________________|  ");
+	iprintf("\x1b[02;00H  +--------------------------+  ");
+	iprintf("\x1b[03;00H  | EC 17/18            G29  |  ");
+	iprintf("\x1b[04;00H  +--------------------------+  ");
 
 //---------------------------------------------------
 
 	interrupciones();
+
 	estado = INICIO;
 	while(estado != FIN) {
+		// Temp
 		switch(TeclaPulsada()) {
 			case A:
-			iprintf("A\n");
-			break;
+				debugPressedKey("A", "encuesta");
+				break;
 			case START:
-			iprintf("START\n");
-			break;
+				debugPressedKey("START", "encuesta");
+				break;
 			case DERECHA:
-			iprintf("DERECHA\n");
-			break;
+				debugPressedKey("DERECHA", "encuesta");
+				break;		
 			case ARRIBA:
-			iprintf("ARRIBA\n");
-			break;
+				debugPressedKey("ARRIBA", "encuesta");
+				break;
 			case ABAJO:
-			iprintf("ABAJO\n");
-			break;
+				debugPressedKey("ABAJO", "encuesta");
+				break;
 			case R:
-			iprintf("R\n");
-			break;
+				debugPressedKey("R", "encuesta");
+				break;
 			case L:
-			iprintf("L\n");
-			break;
-			default:
-			break;
+				debugPressedKey("L", "encuesta");
+				break;
 		}
-
+	
+		switch(estado) {
+			case INICIO:
+				break;
+			case PARTIDA:
+				break;
+			case FIN_PARTIDA:
+				break;
+			case FIN:
+				break;
+		}
 
     } // while
 
@@ -117,4 +133,61 @@ int main() {
 
 } //main
 
+void inicio() {
+	if(TactilTocada()) {
+		if(isStartTextVisible()) {
+			hideStartText();
+		}
+		iprintf("Pantalla tocada\n");
+		estado = PARTIDA;
+	}
+}
 
+void partida() {
+	
+}
+
+void finPartida() {
+	
+}
+
+void estadoFin() {
+	
+}
+
+// void mostrarTextoInicio() {
+// 	iprintf("\x1b[12;05H %s ", "Para comenzar, toque");
+// 	iprintf("\x1b[13;06H %s ",  "la pantalla tactil");
+// }
+
+// void ocultarTextoInicio() {
+// 	iprintf("\x1b[12;00H%32s", "");
+// 	iprintf("\x1b[13;00H%32s", "");
+// }
+
+/*
+switch(TeclaPulsada()) {
+	case A:
+		break;
+	case B:
+		break;
+	case SELECT:
+		break;
+	case START:
+		break;
+	case DERECHA:
+		break;
+	case IZQUIERDA:
+		break;			
+	case ARRIBA:
+		break;
+	case ABAJO:
+		break;
+	case R:
+		break;
+	case L:
+		break;
+	default:
+		break;
+}
+*/
