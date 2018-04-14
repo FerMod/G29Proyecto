@@ -27,13 +27,19 @@ int TeclaPulsada() {
 		
 	return -1;
 
-	}
+}
+
+void debugPressedKey(char *key, char *type) {
+	// consoleSelect(&topScreen);
+	iprintf("\x1b[17;0H %s(%s)\x1b[0K", key, type);
+}
 
 
 // Rutina de atencion a la interrupcion del teclado
 void IntTec() {
 	switch(TeclaPulsada()) {
 		case B:
+			estado = INICIO;
 			debugPressedKey("B", "interrupcion");
 			break;
 		case SELECT:
@@ -44,9 +50,4 @@ void IntTec() {
 			debugPressedKey("IZQUIERDA", "interrupcion");
 			break;
 	}
-} 
-
-void debugPressedKey(char *key, char *type) {
-	iprintf("\x1b[17;00H %s(%s)", key, type);
 }
-

@@ -10,13 +10,15 @@
 #include "screenText.h"
 
 int ticks = 0;
-
+int current;
 // Rutina de atencion a la interrupcion del temporizador
 void IntTemp() {
 
-	ticks++;
-	if(ticks==512) {
-		ticks = 0;
+	if(estado != FIN) {
+		ticks++;
+		if(ticks==512) {
+			ticks = 0;
+		}
 	}
 
 	switch(estado) {
@@ -35,7 +37,10 @@ void IntTemp() {
 		case FIN:
 			break;
 	}
-
-	iprintf("\x1b[22;00H ticks: %3d", ticks);
-
+	// consoleSelect(&topScreen);
+	iprintf("\x1b[22;0H\x1b[39m ticks: %3d\x1b[0K", ticks);
+	
 }
+
+// https://github.com/devkitPro/libnds/blob/master/source/arm9/console.c
+// https://en.wikipedia.org/wiki/ANSI_escape_code#Colors
