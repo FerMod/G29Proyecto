@@ -56,6 +56,14 @@ extern int TactilTocada();
 
 
 // Variables globales
+
+// extern PrintConsole topScreen, bottomScreen;
+
 extern int estado;
 extern int ticks;
 extern int timer;
+
+void estadoInicio();
+void estadoPartida();
+void estadoFinPartida();
+void estadoFin();
