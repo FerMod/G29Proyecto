@@ -59,6 +59,3 @@ extern int TactilTocada();
 extern int estado;
 extern int ticks;
 extern int timer;
-
-// Funcion temporal, para debugear la tecla pulsada 
-extern void debugPressedKey(char *key, char *type);

@@ -39,10 +39,6 @@ int timer;
 // main
 //---------------------------------------------------
 
-void debugPressedKey(char *key, char *type) {
-	iprintf("\x1b[16;00H %s(%s)", key, type);
-}
-
 void inicio() {
 	if(TactilTocada()) {
 		if(isStartTextVisible()) {

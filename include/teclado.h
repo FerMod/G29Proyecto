@@ -8,6 +8,6 @@ extern int TeclaPulsada();
 //Rutina de atencion a la interrupcion del teclado
 extern void IntTec();
 
-//Todo temporal
-extern void debugPressedKey(char *key, char *type);
 
+// Funcion temporal, para debugear la tecla pulsada 
+extern void debugPressedKey(char *key, char *type);

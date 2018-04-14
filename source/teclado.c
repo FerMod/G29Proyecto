@@ -35,18 +35,18 @@ void IntTec() {
 	switch(TeclaPulsada()) {
 		case B:
 			debugPressedKey("B", "interrupcion");
-			//iprintf("\x1b[21;00H %s(interrupcion)", "B");
 			break;
 		case SELECT:
 			estado = FIN;
 			debugPressedKey("SELECT", "interrupcion");
-			//iprintf("\x1b[21;00H %s(interrupcion)", "SELECT");
 			break;
 		case IZQUIERDA:
 			debugPressedKey("IZQUIERDA", "interrupcion");
-			//iprintf("\x1b[21;00H %s(interrupcion)", "IZQUIERDA");
 			break;
 	}
 } 
 
+void debugPressedKey(char *key, char *type) {
+	iprintf("\x1b[17;00H %s(%s)", key, type);
+}
 
