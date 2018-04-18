@@ -35,7 +35,6 @@ defines.h
 // Esta funcion consulta si se ha tocado la pantalla tactil
 extern int TactilTocada();
 
-
 // Para no liarse con los numeros a cada teclas se le ha asignado un nombre
 
 #define A			0 
@@ -58,7 +57,13 @@ extern int TactilTocada();
 
 // Variables globales
 
+// extern PrintConsole topScreen, bottomScreen;
+
 extern int estado;
+extern int ticks;
+extern int timer;
 
-
-
+void estadoInicio();
+void estadoPartida();
+void estadoFinPartida();
+void estadoFin();

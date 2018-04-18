@@ -28,13 +28,13 @@ void HabilitarInterrupciones() { // En el Controlador de Interrupciones
 
 
 void ProgramarRegistrosControl() { 
-  
+
 	//Registro de Control del Teclado
 	TECLAS_CNT = 0x4026;
-  
-  	//Registro de Control de los Temporizadores
+
+	//Registro de Control de los Temporizadores
 	//Dividimos la frecuencia entre 1
-  	TIMER0_CNT = 0xC0;
+	TIMER0_CNT = 0xC0;
 
 	//   El temporizador se activa poniendo un 1 en el bit 7.
 	//   El temporizador interrumpira al desbordarse el contador, 
@@ -55,11 +55,11 @@ void ProgramarRegistrosControl() {
 
 void DefinirVectorInterrupciones() { // Rutinas de atencion
 
-	//Rutina de Atencion al Teclado
-	irqSet(IRQ_KEYS, IntTec);
-
 	//Rutinas de Atencion a los Temporizadores
 	irqSet(IRQ_TIMER0, IntTemp);
+
+	//Rutina de Atencion al Teclado
+	irqSet(IRQ_KEYS, IntTec);
 
 }
 
@@ -80,11 +80,8 @@ void InhibirInterrupciones() { // En el Controlador de Interrupciones
 
 void interrupciones(){
 
-  HabilitarInterrupciones();
-  ProgramarRegistrosControl();
-  DefinirVectorInterrupciones();
- 
+	HabilitarInterrupciones();
+	ProgramarRegistrosControl();
+	DefinirVectorInterrupciones();
+
 }
-
-
-
