@@ -37,17 +37,19 @@ void debugPressedKey(char *key, char *type) {
 
 // Rutina de atencion a la interrupcion del teclado
 void IntTec() {
-	switch(TeclaPulsada()) {
-		case B:
-			estado = INICIO;
-			debugPressedKey("B", "interrupcion");
-			break;
-		case SELECT:
-			estado = FIN;
-			debugPressedKey("SELECT", "interrupcion");
-			break;
-		case IZQUIERDA:
-			debugPressedKey("IZQUIERDA", "interrupcion");
-			break;
+	if(estado == PARTIDA) {
+		switch(TeclaPulsada()) {
+			case B:
+				estado = FIN_PARTIDA;
+				debugPressedKey("B", "interrupcion");
+				break;
+			case IZQUIERDA:
+				debugPressedKey("IZQUIERDA", "interrupcion");
+				break;
+		}
+	}
+	if(TeclaPulsada() == SELECT) {
+		estado = FIN;
+		debugPressedKey("SELECT", "interrupcion");
 	}
 }

@@ -36,7 +36,6 @@ int TactilTocada() {
 //PrintConsole topScreen, bottomScreen;
 
 int estado;
-int timer;
 
 //---------------------------------------------------
 // main
@@ -147,6 +146,7 @@ int main() {
 				estadoPartida();
 				break;
 			case FIN_PARTIDA:
+				//Mostrar puntuacion
 				break;
 			case FIN:
 				estadoFin();
@@ -174,10 +174,17 @@ void estadoInicio() {
 }
 
 void estadoPartida() {
-
+	iprintf("\x1b[21;01H\x1b[0m Time: %d s\x1b[0K", timer);
 }
 
 void estadoFinPartida() {
+	// MostrarPuntuacion
+	switch(TeclaPulsada()) {
+			case START:
+				//debugPressedKey("A", "encuesta");
+				estado = PARTIDA;
+				break;
+	}
 }
 
 void estadoFin() {

@@ -10,15 +10,16 @@
 #include "screenText.h"
 
 int ticks = 0;
-int current;
+int timer = 0;
+
 // Rutina de atencion a la interrupcion del temporizador
 void IntTemp() {
 
 	if(estado != FIN) {
-		ticks++;
-		if(ticks==512) {
+		if(ticks==513) {
 			ticks = 0;
-		}
+		}		
+		ticks++;
 	}
 
 	switch(estado) {
@@ -37,8 +38,9 @@ void IntTemp() {
 		case FIN:
 			break;
 	}
+
 	// consoleSelect(&topScreen);
-	iprintf("\x1b[22;0H\x1b[39m ticks: %3d\x1b[0K", ticks);
+	iprintf("\x1b[22;1H\x1b[39m ticks: %3d\x1b[0K", ticks);
 	
 }
 
