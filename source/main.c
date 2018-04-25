@@ -18,6 +18,8 @@ dovoto y otro de Jaeden Amero
 #include "temporizadores.h"
 #include "screenText.h"
 
+#include "spriteManager.h"
+
 //---------------------------------------------------
 // Funciones
 //---------------------------------------------------
@@ -36,9 +38,6 @@ int TactilTocada() {
 //PrintConsole topScreen, bottomScreen;
 
 int estado;
-int numBillete = 0;
-
-time_t t;
 
 //---------------------------------------------------
 // main
@@ -111,7 +110,14 @@ int main() {
 //---------------------------------------------------
 
 	interrupciones();
-
+	// MostrarBillete(1, 20, 20);
+	// MostrarBillete(0, 20, 20);
+	// MostrarSobre(100, 120);
+	// SpriteEntry billeteEntry = oamMain.oamMemory[0];
+	// iprintf("\x1b[05;01H\x1b[0m Sprite x: %d y:%d", billeteEntry.x, billeteEntry.y);
+	// iprintf("\x1b[06;01H\x1b[0m Sprite x: %d y:%d", oamMain.oamMemory[1].x, oamMain.oamMemory[1].y);
+	// iprintf("\x1b[07;01H\x1b[0m Sprite x: %d y:%d", oamMain.oamMemory[127].x, oamMain.oamMemory[127].y);	
+	// iprintf("\x1b[08;01H\x1b[0m Numero Sprites: %d", oamCountFragments(&oamMain));
 	estado = INICIO;
 	bool exit = false;
 	while(!exit) {
@@ -178,15 +184,17 @@ void estadoInicio() {
 
 void estadoPartida() {
 	iprintf("\x1b[21;01H\x1b[0m Time: %d s\x1b[0K", timer);	
+
+	//redrawSprites();
 }
 
 void estadoFinPartida() {
 	// MostrarPuntuacion
 	switch(TeclaPulsada()) {
-			case START:
-				//debugPressedKey("A", "encuesta");
-				estado = PARTIDA;
-				break;
+		case START:
+			//debugPressedKey("A", "encuesta");
+			estado = PARTIDA;
+			break;
 	}
 }
 
