@@ -36,6 +36,9 @@ int TactilTocada() {
 //PrintConsole topScreen, bottomScreen;
 
 int estado;
+int numBillete = 0;
+
+time_t t;
 
 //---------------------------------------------------
 // main
@@ -96,7 +99,7 @@ int main() {
 		en este caso time(NULL). srand() solo se suele activar una vez por ejecucion y
 		no devuelve ningun valor. 
 		La funcion para generar valores aleatorios en el resto del programa es rand() */
-	srand (time(NULL));	
+	srand(time(NULL));	
 	
 	//consoleSelect(&topScreen);
 	/* Incluimos la siguiente cabecera para que cada grupo la modifique con
@@ -174,7 +177,7 @@ void estadoInicio() {
 }
 
 void estadoPartida() {
-	iprintf("\x1b[21;01H\x1b[0m Time: %d s\x1b[0K", timer);
+	iprintf("\x1b[21;01H\x1b[0m Time: %d s\x1b[0K", timer);	
 }
 
 void estadoFinPartida() {

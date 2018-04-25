@@ -12,6 +12,9 @@
 int ticks = 0;
 int timer = 0;
 
+int numBillete;
+int nextSpawnTime = 0;
+
 // Rutina de atencion a la interrupcion del temporizador
 void IntTemp() {
 
@@ -32,6 +35,23 @@ void IntTemp() {
 			if(ticks==512) {
 				timer++;
 			}
+						
+			//
+			int i;
+			for(i = 0; i <= numBillete - 1;i++) {
+				// MostrarBillete(numBillete, rand()%255, );
+			}
+			//
+							
+			//TODO define in another file
+			if(nextSpawnTime==0) {
+				MostrarBillete(numBillete, rand()%255, 0);
+				numBillete++;
+				nextSpawnTime = 768;
+			} else {
+				nextSpawnTime--;			
+			}
+			////
 			break;
 		case FIN_PARTIDA:
 			break;

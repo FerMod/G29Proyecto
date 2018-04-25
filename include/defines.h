@@ -62,8 +62,17 @@ extern int TactilTocada();
 extern int estado;
 extern int ticks;
 extern int timer;
+extern int numBilletes;
 
 void estadoInicio();
 void estadoPartida();
 void estadoFinPartida();
 void estadoFin();
+
+void MostrarBillete(int indice, int x, int y);
+void BorrarBillete(int indice, int x, int y);
+
+void MostrarSobre(int x, int y);
+void BorrarSobre(int x, int y);
+
+
