@@ -1,5 +1,9 @@
 /*-------------------------------------
  screenText.c
+
+// https://github.com/devkitPro/libnds/blob/master/source/arm9/console.c
+// https://en.wikipedia.org/wiki/ANSI_escape_code#Colors
+
 -------------------------------------*/
 
 // Anadir los includes que sean necesarios
@@ -28,8 +32,8 @@ void showStartText() {
 
 void hideStartText() {
 	// consoleSelect(&bottomScreen);
-	iprintf("\x1b[12;00H\x1b[0K\x1b[0m");
-	iprintf("\x1b[13;00H\x1b[0K\x1b[0m");
+	iprintf("\x1b[12;00H\x1b[2K\x1b[0m");
+	iprintf("\x1b[13;00H\x1b[2K\x1b[0m");
 	startTextVisible = false;
 }
 
