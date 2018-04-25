@@ -1,6 +1,9 @@
 /*-------------------------------------
  temporizadores.c
 -------------------------------------*/
+
+#include "temporizadores.h"
+
 // Anadir los includes que sean necesarios
 #include "defines.h"
 #include "sprites.h"
@@ -8,12 +11,13 @@
 #include <stdio.h>
 
 #include "screenText.h"
+#include "spriteManager.h"
 
 int ticks = 0;
 int timer = 0;
 
-int numBillete;
-int nextSpawnTime = 0;
+int spawnCountdown = 0;
+int dropSpeed = 256;
 
 // Rutina de atencion a la interrupcion del temporizador
 void IntTemp() {
@@ -35,23 +39,7 @@ void IntTemp() {
 			if(ticks==512) {
 				timer++;
 			}
-						
-			//
-			int i;
-			for(i = 0; i <= numBillete - 1;i++) {
-				// MostrarBillete(numBillete, rand()%255, );
-			}
-			//
-							
-			//TODO define in another file
-			if(nextSpawnTime==0) {
-				MostrarBillete(numBillete, rand()%255, 0);
-				numBillete++;
-				nextSpawnTime = 768;
-			} else {
-				nextSpawnTime--;			
-			}
-			////
+			updateSprites();	
 			break;
 		case FIN_PARTIDA:
 			break;
@@ -64,5 +52,16 @@ void IntTemp() {
 	
 }
 
-// https://github.com/devkitPro/libnds/blob/master/source/arm9/console.c
-// https://en.wikipedia.org/wiki/ANSI_escape_code#Colors
+void updateSprites() {
+	
+	if(ticks == dropSpeed) {
+		moveSprites();
+	}
+
+	if(spawnCountdown == 0) {
+		createSprite(numberSprites, rand()%255, 0);
+		spawnCountdown = SPAWN_TIME;
+	} else {
+		spawnCountdown--;			
+	}
+}
