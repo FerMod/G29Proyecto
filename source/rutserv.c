@@ -7,6 +7,7 @@
 #include "teclado.h"
 #include "defines.h"
 #include "temporizadores.h"
+#include "updateScreen.h"
 
 // Este procedimiento inicializa la tabla de interrupciones para que el gestor de interrupciones sepa
 // que rutina de atencion tiene que ejecutar cuando le llega una peticion de interrupcion. 
@@ -19,7 +20,7 @@ void HabilitarInterrupciones() { // En el Controlador de Interrupciones
 
 	//Escribir un 1 en el bit correspondiente
 	// Habilitamos la interrupcion por teclado y temporizador
-	IE |= 0x1008;
+	IE |= 0x1009;
 
 	//Se vuelven a habilitar todas las interrupciones
 	EnableInts();
@@ -55,6 +56,8 @@ void ProgramarRegistrosControl() {
 
 void DefinirVectorInterrupciones() { // Rutinas de atencion
 
+	irqSet(IRQ_VBLANK, IntVBlank);
+
 	//Rutinas de Atencion a los Temporizadores
 	irqSet(IRQ_TIMER0, IntTemp);
 
@@ -70,7 +73,7 @@ void InhibirInterrupciones() { // En el Controlador de Interrupciones
 	DisableInts();
 
 	//Escribir un 0 en el bit correspondiente
-	IE &= 0xFFFFEFF7;
+	IE &= 0xFFFFEFF6;
 
 	//Se vuelven a habilitar todas las interrupciones
 	EnableInts();

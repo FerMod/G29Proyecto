@@ -9,6 +9,7 @@ dovoto y otro de Jaeden Amero
 #include <unistd.h>
 #include "sprites.h"
 #include "defines.h"
+#include "updateScreen.h"
 
 u16* gfxBillete;
 u16* gfxSobre;
@@ -63,9 +64,9 @@ void establecerPaletaPrincipal() {
  * colores posibles en la pantalla secundaria. El 0 es transparente y los no definidos son negros.
  */
 void establecerPaletaSecundaria() {
-   SPRITE_PALETTE_SUB[1] = RGB15(0,31,0);   // los pixels a 1 se mostraran verdes
-   SPRITE_PALETTE_SUB[2] = RGB15(31,31,31); // los pixels a 1 se mostraran blancos
-   SPRITE_PALETTE_SUB[3] = RGB15(31,31,0);  // los pixels a 1 se mostraran amarillos
+	SPRITE_PALETTE_SUB[1] = RGB15(0,31,0);   // los pixels a 1 se mostraran verdes
+	SPRITE_PALETTE_SUB[2] = RGB15(31,31,31); // los pixels a 1 se mostraran blancos
+	SPRITE_PALETTE_SUB[3] = RGB15(31,31,0);  // los pixels a 1 se mostraran amarillos
 }
 
 
@@ -128,87 +129,89 @@ u8 Billete[256] =
 /* Para cada Sprite que se quiera llevar a pantalla hay que hacer una de estas funciones. */
 
 void BorrarBillete(int indice, int x, int y) {
-oamSet(&oamMain, //main graphics engine context
-	indice,  //oam index (0 to 127)  
-	x, y,    //x and y pixle location of the sprite
-	0,       //priority, lower renders last (on top)
-	0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
-	SpriteSize_16x16,     
-	SpriteColorFormat_256Color, 
-	gfxBillete,//+16*16/2, 	//pointer to the loaded graphics
-	-1,                  	//sprite rotation data  
-	false,               	//double the size when rotating?
-	true,			//hide the sprite?
-	false, false, 		//vflip, hflip
-	false			//apply mosaic
-	); 
-oamUpdate(&oamMain); 
+	oamSet(&oamMain, //main graphics engine context
+		indice,  //oam index (0 to 127)  
+		x, y,    //x and y pixle location of the sprite
+		0,       //priority, lower renders last (on top)
+		0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
+		SpriteSize_16x16,     
+		SpriteColorFormat_256Color, 
+		gfxBillete,//+16*16/2, 	//pointer to the loaded graphics
+		-1,                  	//sprite rotation data  
+		false,               	//double the size when rotating?
+		true,			//hide the sprite?
+		false, false, 		//vflip, hflip
+		false			//apply mosaic
+		); 
+	// oamUpdate(&oamMain);
+	scheduleOamUpdate(); // In the next VBlank it will update the OAM
 }
 
 void MostrarBillete (int indice, int x, int y){ 
-oamSet(&oamMain, //main graphics engine context
-	indice,  //oam index (0 to 127)  
-	x, y,    //x and y pixle location of the sprite
-	0,       //priority, lower renders last (on top)
-	0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
-	SpriteSize_16x16,     
-	SpriteColorFormat_256Color, 
-	gfxBillete,//+16*16/2, 	//pointer to the loaded graphics
-	-1,                  	//sprite rotation data  
-	false,               	//double the size when rotating?
-	false,			//hide the sprite?
-	false, false, 		//vflip, hflip
-	false			//apply mosaic
-	); 
-oamUpdate(&oamMain);  
+	oamSet(&oamMain, //main graphics engine context
+		indice,  //oam index (0 to 127)  
+		x, y,    //x and y pixle location of the sprite
+		0,       //priority, lower renders last (on top)
+		0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
+		SpriteSize_16x16,     
+		SpriteColorFormat_256Color, 
+		gfxBillete,//+16*16/2, 	//pointer to the loaded graphics
+		-1,                  	//sprite rotation data  
+		false,               	//double the size when rotating?
+		false,			//hide the sprite?
+		false, false, 		//vflip, hflip
+		false			//apply mosaic
+		); 
+	// oamUpdate(&oamMain);
+	scheduleOamUpdate(); // In the next VBlank it will update the OAM
 }
 
 void BorrarSobre(int x, int y){
-oamSet(&oamMain, //main graphics engine context
-	127,     //oam index (0 to 127)  
-	x, y,    //x and y pixle location of the sprite
-	0,       //priority, lower renders last (on top)
-	0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
-	SpriteSize_16x16,     
-	SpriteColorFormat_256Color, 
-	gfxSobre,//+16*16/2,	//pointer to the loaded graphics
-	-1,                  	//sprite rotation data  
-	false,               	//double the size when rotating?
-	true,			//hide the sprite?
-	false, false, 		//vflip, hflip
-	false			//apply mosaic
-	); 
-oamUpdate(&oamMain); 
+	oamSet(&oamMain, //main graphics engine context
+		127,     //oam index (0 to 127)  
+		x, y,    //x and y pixle location of the sprite
+		0,       //priority, lower renders last (on top)
+		0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
+		SpriteSize_16x16,     
+		SpriteColorFormat_256Color, 
+		gfxSobre,//+16*16/2,	//pointer to the loaded graphics
+		-1,                  	//sprite rotation data  
+		false,               	//double the size when rotating?
+		true,			//hide the sprite?
+		false, false, 		//vflip, hflip
+		false			//apply mosaic
+		); 
+	// oamUpdate(&oamMain);
+	scheduleOamUpdate(); // In the next VBlank it will update the OAM
 }
 
 void MostrarSobre (int x, int y){
-oamSet(&oamMain, //main graphics engine context
-	127,     //oam index (0 to 127)  
-	x, y,    //x and y pixle location of the sprite
-	0,       //priority, lower renders last (on top)
-	0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
-	SpriteSize_16x16,     
-
-	SpriteColorFormat_256Color, 
-	gfxSobre,//+16*16/2,	//pointer to the loaded graphics
-	-1,                  	//sprite rotation data  
-	false,               	//double the size when rotating?
-	false,			//hide the sprite?
-	false, false, 		//vflip, hflip
-	false			//apply mosaic
-	); 
-oamUpdate(&oamMain);  
+	oamSet(&oamMain, //main graphics engine context
+		127,     //oam index (0 to 127)  
+		x, y,    //x and y pixle location of the sprite
+		0,       //priority, lower renders last (on top)
+		0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
+		SpriteSize_16x16,
+		SpriteColorFormat_256Color, 
+		gfxSobre,//+16*16/2,	//pointer to the loaded graphics
+		-1,                  	//sprite rotation data  
+		false,               	//double the size when rotating?
+		false,			//hide the sprite?
+		false, false, 		//vflip, hflip
+		true			//apply mosaic
+		); 
+	// oamUpdate(&oamMain);
+	scheduleOamUpdate(); // In the next VBlank it will update the OAM
 }
 
 
 
 void guardarSpritesEnMemoria(){ 
-  int i;
-  for(i = 0; i < 16 * 16 / 2; i++){ //muestra un cuadrado en la memoria de la pantalla principal		
-     gfxBillete[i] = Billete[i*2] | (Billete[(i*2)+1]<<8);
-     gfxSobre[i]   = Sobre[i*2]   | (Sobre[(i*2)+1]<<8);	
-
-  }
+	int i;
+	for(i = 0; i < 16 * 16 / 2; i++){ //muestra un cuadrado en la memoria de la pantalla principal		
+		gfxBillete[i] = Billete[i*2] | (Billete[(i*2)+1]<<8);
+		gfxSobre[i]   = Sobre[i*2]   | (Sobre[(i*2)+1]<<8);
+	}
 }
 
 
