@@ -19,6 +19,7 @@ dovoto y otro de Jaeden Amero
 #include "screenText.h"
 
 #include "spriteManager.h"
+// #include "player.h"
 
 //---------------------------------------------------
 // Funciones
@@ -38,6 +39,7 @@ int TactilTocada() {
 //PrintConsole topScreen, bottomScreen;
 
 int estado;
+int tecla;
 
 //---------------------------------------------------
 // main
@@ -119,10 +121,12 @@ int main() {
 	// iprintf("\x1b[07;01H\x1b[0m Sprite x: %d y:%d", oamMain.oamMemory[127].x, oamMain.oamMemory[127].y);	
 	// iprintf("\x1b[08;01H\x1b[0m Numero Sprites: %d", oamCountFragments(&oamMain));
 	estado = INICIO;
+
+	tecla = TeclaPulsada();
 	bool exit = false;
 	while(!exit) {
 		// Temp ////
-		switch(TeclaPulsada()) {
+		switch(tecla) {
 			case A:
 				debugPressedKey("A", "encuesta");
 				break;
@@ -163,7 +167,9 @@ int main() {
 				break;
 		}
 
-		swiWaitForVBlank();
+		swiWaitForVBlank(); // Halt a thread until the next vertical blank occurs.
+		tecla = TeclaPulsada();
+		//consumePlayerInput();
 
     } // while
 
@@ -179,20 +185,23 @@ void estadoInicio() {
 		iprintf("\x1b[05;01H\x1b[0m Pantalla tocada");
 		ticks = 0;
 		estado = PARTIDA;
+		MostrarSobre(120, 172); // Spawn player
 	}
 }
 
 void estadoPartida() {
-	iprintf("\x1b[21;01H\x1b[0m Time: %d s\x1b[0K", timer);	
-
+	iprintf("\x1b[21;01H\x1b[0m Time: %d s\x1b[0K", timer);
+	//consumePlayerInput();
 	//redrawSprites();
+	movePlayerSprite();
+	moveSprites();
 }
 
 void estadoFinPartida() {
 	// MostrarPuntuacion
-	switch(TeclaPulsada()) {
+	switch(tecla) {
 		case START:
-			//debugPressedKey("A", "encuesta");
+			debugPressedKey("A", "encuesta");
 			estado = PARTIDA;
 			break;
 	}
@@ -205,6 +214,24 @@ void estadoFin() {
 
     iprintf("\x1b[18;01H\x1b[0m Fin de programa");
 
+}
+
+void consumePlayerInput() {
+	switch(TeclaPulsada()) {
+		case DERECHA:
+			tecla = DERECHA;
+			break;
+		// case IZQUIERDA:
+		// 	break;			
+		// case ARRIBA:
+		// 	break;
+		// case ABAJO:
+		// 	break;
+	}
+}
+
+int getRandValue(int min, int max) {
+	return (rand()%(max-min))+min;
 }
 
 /*

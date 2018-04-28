@@ -63,6 +63,7 @@ extern int estado;
 extern int ticks;
 extern int timer;
 extern int numBilletes;
+extern int tecla;
 
 void estadoInicio();
 void estadoPartida();
@@ -75,4 +76,7 @@ void BorrarBillete(int indice, int x, int y);
 void MostrarSobre(int x, int y);
 void BorrarSobre(int x, int y);
 
+int getRandValue(int min, int max);
+
+void consumePlayerInput();
 

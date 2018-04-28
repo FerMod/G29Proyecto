@@ -7,6 +7,7 @@
 // Anadir los includes que sean necesarios
 #include "defines.h"
 #include "sprites.h"
+
 #include <nds.h>
 #include <stdio.h>
 
@@ -55,13 +56,16 @@ void IntTemp() {
 void updateSprites() {
 	
 	if(ticks == dropSpeed) {
-		moveSprites();
+		scheduleMove();
 	}
-
-	if(spawnCountdown == 0) {
-		createSprite(numberSprites, rand()%255, 0);
-		spawnCountdown = SPAWN_TIME;
-	} else {
-		spawnCountdown--;			
+	iprintf("\x1b[7;1H\x1b[39m can spawn billete: %5s\x1b[0K", canSpawnSprite()?"true":"false");
+	if(canSpawnSprite()) {
+		iprintf("\x1b[8;1H\x1b[39m spawn countdown: %3d\x1b[0K", spawnCountdown);
+		if(spawnCountdown == 0) {
+			createSprite(numberSprites, getRandValue(8, 240), 0);
+			spawnCountdown = SPAWN_TIME;
+		} else {
+			spawnCountdown--;
+		}
 	}
 }
