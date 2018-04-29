@@ -17,6 +17,8 @@
 int ticks = 0;
 int timer = 0;
 
+int spawnCooldown = 1024; // Max ticks that need to pass, before allowing another spawn
+
 int spawnCountdown = 0;
 int dropSpeed = 256;
 
@@ -56,16 +58,18 @@ void IntTemp() {
 void updateSprites() {
 	
 	if(ticks == dropSpeed) {
-		scheduleMove();
+		scheduleSpriteMove();
 	}
-	iprintf("\x1b[7;1H\x1b[39m can spawn billete: %5s\x1b[0K", canSpawnSprite()?"true":"false");
+
+	iprintf("\x1b[07;1H spawn billete: %5s (%3d)\x1b[0K", canSpawnSprite() ? "\x1b[42mtrue\x1b[39m" : "\x1b[41mfalse\x1b[39m", spawnCountdown);
 	if(canSpawnSprite()) {
-		iprintf("\x1b[8;1H\x1b[39m spawn countdown: %3d\x1b[0K", spawnCountdown);
 		if(spawnCountdown == 0) {
-			createSprite(numberSprites, getRandValue(8, 240), 0);
+			scheduleSpriteSpawn();
+			//createSprite(0, getRandValue(8, 240), 0);
 			spawnCountdown = SPAWN_TIME;
 		} else {
 			spawnCountdown--;
 		}
 	}
+
 }
