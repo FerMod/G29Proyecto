@@ -81,7 +81,7 @@ int getRandValue(int min, int max);
 int getPoints();
 void setPoints(int num);
 void increasePoints();
-void removePoints();
+void decreasePoints();
 
 void consumePlayerInput();
 
