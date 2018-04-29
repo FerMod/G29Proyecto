@@ -40,6 +40,7 @@ int TactilTocada() {
 
 int estado;
 int tecla;
+int points;
 
 //---------------------------------------------------
 // main
@@ -182,19 +183,25 @@ void estadoInicio() {
 		if(isStartTextVisible()) {
 			hideStartText();
 		}
-		iprintf("\x1b[05;01H\x1b[0m Pantalla tocada");
+		iprintf("\x1b[05;01H Pantalla tocada");
 		ticks = 0;
 		estado = PARTIDA;
+		points = 0;
 		MostrarSobre(120, 172); // Spawn player
 	}
 }
 
 void estadoPartida() {
-	iprintf("\x1b[21;01H\x1b[0m Time: %d s\x1b[0K", timer);
+	iprintf("\x1b[21;01H\x1b[39m Time: %d s\x1b[0K", timer);
 	//consumePlayerInput();
 	//redrawSprites();
+	spriteSpawns();
 	movePlayerSprite();
 	moveSprites();
+	checkPlayerTouch();
+
+	iprintf("\x1b[15;1H\x1b[43m Puntuacion: %04d\x1b[0K", getPoints());
+
 }
 
 void estadoFinPartida() {
@@ -212,7 +219,7 @@ void estadoFin() {
 		hideStartText();
 	}
 
-    iprintf("\x1b[18;01H\x1b[0m Fin de programa");
+    iprintf("\x1b[18;01H\x1b[39m Fin de programa");
 
 }
 
@@ -230,8 +237,24 @@ void consumePlayerInput() {
 	}
 }
 
+void setPoints(int num) {
+	points = num;
+}
+
+void increasePoints() {
+	points++;
+}
+
+void decreasePoints() {
+	points--;
+}
+
+int getPoints() {
+	return points;
+}
+
 int getRandValue(int min, int max) {
-	return (rand()%(max-min))+min;
+	return (rand() % (max-min)) + min;
 }
 
 /*

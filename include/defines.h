@@ -62,7 +62,7 @@ extern int TactilTocada();
 extern int estado;
 extern int ticks;
 extern int timer;
-extern int numBilletes;
+extern int playerScore;
 extern int tecla;
 
 void estadoInicio();
@@ -77,6 +77,11 @@ void MostrarSobre(int x, int y);
 void BorrarSobre(int x, int y);
 
 int getRandValue(int min, int max);
+
+int getPoints();
+void setPoints(int num);
+void increasePoints();
+void removePoints();
 
 void consumePlayerInput();
 

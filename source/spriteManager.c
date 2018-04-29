@@ -15,6 +15,7 @@
 // #include "player.h"
 
 bool moveScheduled = false;
+bool spawnScheduled = false;
 
 int numberSprites = 0;
 int maxSpriteSpawns = 1;
@@ -43,7 +44,7 @@ void setMaxSpriteSpawns(int max) {
 		maxSpriteSpawns = 0;
 	} else {
 		maxSpriteSpawns = max;
-	}	
+	}
 }
 
 int getMaxSpriteSpawns() {
@@ -62,7 +63,7 @@ void printInfo() {
 	}
 }
 
-void scheduleMove() {
+void scheduleSpriteMove() {
 	moveScheduled = true;
 }
 
@@ -70,14 +71,15 @@ void moveSprites() {
 
 	if(moveScheduled) {
 		int i;
-		SpriteEntry*  playerSprite = &oamMain.oamMemory[PLAYER_SPRITE];
-		for (i = 0; i < 128; i++) {
+		//SpriteEntry*  playerSprite = &oamMain.oamMemory[PLAYER_SPRITE];
+		for (i = 0; i < numberSprites; i++) {
 			if(i != PLAYER_SPRITE) {
 				SpriteEntry* spriteEntry = &oamMain.oamMemory[i]; //Sprite with id = i	
 				if(!spriteEntry->isHidden) {	
 					
 					int x = spriteEntry->x;
 
+					// Move random to the left or right, to give more 'leaf' sensation
 					switch(getRandValue(0, 2)) {
 						case 0:
 							//sprite->x = sprite->x+4;
@@ -97,11 +99,7 @@ void moveSprites() {
 
 					if(!canSpriteMoveY(spriteEntry->y)) {
 						deleteSprite(i, spriteEntry->x, spriteEntry->y);
-					}
-
-					iprintf("\x1b[09;01H collision:%5s\x1b[0K", checkSpriteOverlap(playerSprite, spriteEntry) ? "\x1b[42mtrue\x1b[0m" : "\x1b[41mfalse\x1b[0m");
-					if(checkSpriteOverlap(playerSprite, spriteEntry)) {
-						deleteSprite(i, spriteEntry->x, spriteEntry->y);
+						decreasePoints();
 					}
 					
 					scheduleOamUpdate();
@@ -111,9 +109,28 @@ void moveSprites() {
 			}
 		}
 		moveScheduled = false;
-
 	}
 
+}
+
+void scheduleSpriteSpawn() {
+	spawnScheduled = true;
+}
+
+bool isSpriteSpawnScheduled() {
+	return spawnScheduled;
+}
+
+void spriteSpawns(){
+	iprintf("\x1b[08;01H\x1b[39m Sprites: %d spawn: %5s", numberSprites, spawnScheduled ? "\x1b[42mtrue\x1b[39m" : "\x1b[41mfalse\x1b[39m");
+	int i;
+	for (i = 0; i <= numberSprites && spawnScheduled; i++) {
+		SpriteEntry* spriteEntry = &oamMain.oamMemory[i];
+		if(spriteEntry->isHidden) {
+			spawnScheduled = false;
+			createSprite(i, getRandValue(8, 240), 0);
+		}
+	}
 }
 
 void movePlayerSprite() {
@@ -136,16 +153,15 @@ void movePlayerSprite() {
 			spriteEntry->y--;
 		}
 
-		bool collision = false;
-
 		if(canSpriteMove(spriteEntry->x, spriteEntry->y)) {
 			scheduleOamUpdate();
 		} else {
-			collision = true; // TODO: Temporal
 			spriteEntry->x = x;
 			spriteEntry->y = y;
 		}
-		iprintf("\x1b[05;01H x:%3d y:%3d collision:%5s\x1b[0K", x, y, collision ? "\x1b[42mtrue\x1b[0m" : "\x1b[41mfalse\x1b[0m");
+
+		iprintf("\x1b[05;01H x:%3d y:%3d collision: %5s\x1b[0K", x, y, canSpriteMove(spriteEntry->x, spriteEntry->y) ? "\x1b[42mtrue\x1b[39m" : "\x1b[41mfalse\x1b[39m");
+
 
 	}
 }
@@ -163,18 +179,44 @@ bool canSpriteMoveY(int y) {
 	return !(y < 0 || y > 176);
 }
 
-bool checkSpriteOverlap(SpriteEntry* sprite1, SpriteEntry* sprite2) {
+void checkPlayerTouch() {
+	
+	SpriteEntry*  playerSprite = &oamMain.oamMemory[PLAYER_SPRITE];
 
-	float d1x = sprite2->x - (sprite1->x+15);
-	float d1y = sprite2->y - (sprite1->y+15);
-	float d2x = sprite1->x - (sprite2->x+15);
-	float d2y = sprite1->y - (sprite2->y+15);
+	int i;
+	for (i = 0; i < numberSprites; i++) {
 
-	if (d1x > 0.0f || d1y > 0.0f){
-		return false;
+		if(i != PLAYER_SPRITE) {
+
+			SpriteEntry* moneySprite = &oamMain.oamMemory[i]; //Sprite with id = i
+
+			iprintf("\x1b[06;01H pickup:%5s\x1b[0K", checkSpriteOverlap(playerSprite, moneySprite) ? "\x1b[42mtrue\x1b[39m" : "\x1b[41mfalse\x1b[39m");
+			if(!moneySprite->isHidden && checkSpriteOverlap(playerSprite, moneySprite)) {
+				deleteSprite(i, moneySprite->x, moneySprite->y);
+				increasePoints();
+			}
+
+
+		}
+
 	}
 
-	if (d2x > 0.0f || d2y > 0.0f){
+}
+
+
+// Source: https://www.toptal.com/game/video-game-physics-part-ii-collision-detection-for-solid-objects
+bool checkSpriteOverlap(SpriteEntry* sprite1, SpriteEntry* sprite2) {
+
+	float d1x = sprite2->x - (sprite1->x+15);	// d1x = b->min.x - a->max.x;
+	float d1y = sprite2->y - (sprite1->y+15);	// d1y = b->min.y - a->max.y;
+	float d2x = sprite1->x - (sprite2->x+15);	// d2x = a->min.x - b->max.x;
+	float d2y = sprite1->y - (sprite2->y+15);	// d2y = a->min.y - b->max.y;
+
+	if (d1x > 0.0f || d1y > 0.0f) {
+		return false;
+	} 
+
+	if (d2x > 0.0f || d2y > 0.0f) {
 		return false;
 	}
 
@@ -183,7 +225,7 @@ bool checkSpriteOverlap(SpriteEntry* sprite1, SpriteEntry* sprite2) {
 
 void redrawSprites() {
 	int i;
-	for (i = 0; i < 128; i++) {
+	for (i = 0; i < numberSprites; i++) {
 		SpriteEntry spriteEntry = oamMain.oamMemory[i]; //Sprite with id = i
 		if(!spriteEntry.isHidden) {	
 			//Update x/y

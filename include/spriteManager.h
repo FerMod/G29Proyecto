@@ -13,23 +13,26 @@ spriteManager.h
 extern int numberSprites;
 extern int maxSpriteSpawns;
 
-extern void createSprite(int index, int x, int y);
+void createSprite(int index, int x, int y);
 
-extern void deleteSprite(int index, int x, int y);
+void deleteSprite(int index, int x, int y);
 
-extern void setMaxSpriteSpawns(int max);
-extern int getMaxSpriteSpawns();
-extern bool canSpawnSprite();
+void setMaxSpriteSpawns(int max);
+int getMaxSpriteSpawns();
+bool canSpawnSprite();
 
-extern void printInfo();
+void printInfo();
 
-extern void moveSprites();
+void scheduleSpriteMove();
+void moveSprites();
 
-extern void scheduleMove();
+void scheduleSpriteSpawn();
+void spawnSprites();
+bool isSpriteSpawnScheduled();
 
-extern void redrawSprites();
+void redrawSprites();
 
-extern void movePlayerSprite();
+void movePlayerSprite();
 
 bool canSpriteMove(int x, int y);
 
@@ -38,6 +41,8 @@ bool canSpriteMoveX(int x);
 bool canSpriteMoveY(int y);
 
 bool checkSpriteOverlap(SpriteEntry* sprite1, SpriteEntry* sprite2);
+
+void checkPlayerTouch();
 
 //int getRandValue(int min, int max);
 
