@@ -25,15 +25,15 @@ bool isStartTextVisible() {
 
 void showStartText() {
 	// consoleSelect(&bottomScreen);
-	iprintf("\x1b[12;05H\x1b[41m %s \x1b[0m", "Para comenzar, toque");
-	iprintf("\x1b[13;06H\x1b[41m %s \x1b[0m",  "la pantalla tactil");
+	iprintf("\x1b[12;05H\x1b[41m %s \x1b[39m", "Para comenzar, toque");
+	iprintf("\x1b[13;06H\x1b[41m %s \x1b[39m",  "la pantalla tactil");
 	startTextVisible = true;
 }
 
 void hideStartText() {
 	// consoleSelect(&bottomScreen);
-	iprintf("\x1b[12;00H\x1b[2K\x1b[0m");
-	iprintf("\x1b[13;00H\x1b[2K\x1b[0m");
+	iprintf("\x1b[12;00H\x1b[2K\x1b[39m");
+	iprintf("\x1b[13;00H\x1b[2K\x1b[39m");
 	startTextVisible = false;
 }
 
