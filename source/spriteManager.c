@@ -153,14 +153,16 @@ void movePlayerSprite() {
 			spriteEntry->y--;
 		}
 
+		bool collision = false; // TODO: Temporal, remove
 		if(canSpriteMove(spriteEntry->x, spriteEntry->y)) {
 			scheduleOamUpdate();
 		} else {
+			collision = true; // TODO: Temporal, remove
 			spriteEntry->x = x;
 			spriteEntry->y = y;
 		}
 
-		iprintf("\x1b[05;01H x:%3d y:%3d collision: %5s\x1b[0K", x, y, canSpriteMove(spriteEntry->x, spriteEntry->y) ? "\x1b[42mtrue\x1b[39m" : "\x1b[41mfalse\x1b[39m");
+		iprintf("\x1b[05;01H x:%3d y:%3d collision: %5s\x1b[0K", x, y, collision ? "\x1b[42mtrue\x1b[39m" : "\x1b[41mfalse\x1b[39m");
 
 
 	}
