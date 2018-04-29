@@ -54,5 +54,9 @@ dkms.conf
 #Visual Studio
 *.vs
 
-#excel
+#Excel
 *.xlsx
+
+#Custom Makefile and binary output
+*.win
+bin
