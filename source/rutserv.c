@@ -19,7 +19,7 @@ void HabilitarInterrupciones() { // En el Controlador de Interrupciones
 	DisableInts();
 
 	//Escribir un 1 en el bit correspondiente
-	// Habilitamos la interrupcion por teclado y temporizador
+	// Habilitamos la interrupcion por teclado, temporizador y vblank
 	IE |= 0x1009;
 
 	//Se vuelven a habilitar todas las interrupciones
@@ -73,6 +73,7 @@ void InhibirInterrupciones() { // En el Controlador de Interrupciones
 	DisableInts();
 
 	//Escribir un 0 en el bit correspondiente
+	// Deshabilitamos la interrupcion por teclado, temporizador y vblank
 	IE &= 0xFFFFEFF6;
 
 	//Se vuelven a habilitar todas las interrupciones
