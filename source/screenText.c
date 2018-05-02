@@ -63,7 +63,7 @@ void printFinalScore() {
 	iprintf("\x1b[07;00H  +--------------------------+  ");
 	
 	iprintf("\x1b[10;02H\x1b[43mPuntuacion Final:\x1b[39m");
-	iprintf("\x1b[11;02H\x1b[43m%04d\x1b[39m", getPoints());
+	iprintf("\x1b[11;02H\x1b[43m%04d\x1b[39m", getScore());
 
 	iprintf("\x1b[14;02H\x1b[43mTiempo:\x1b[39m");
 	iprintf("\x1b[15;02H\x1b[43m%d s\x1b[39m", getTime());
@@ -78,6 +78,6 @@ void printScore(int x, int y, int score) {
 }
 
 void printPickUpText(int x, int y, bool b) {
-	iprintf("\x1b[%d;%dHpickup:%5s\x1b[0K", b ? "\x1b[42mtrue\x1b[39m" : "\x1b[41mfalse\x1b[39m", x, y, b);
+	iprintf("\x1b[%d;%dH\x1b[39mpickup:%5s\x1b[0K", x, y, b ? "\x1b[42mtrue" : "\x1b[41mfalse");
 }
 

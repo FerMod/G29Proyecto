@@ -74,7 +74,7 @@ void moveSprites() {
 	if(moveScheduled) {
 		int i;
 		//SpriteEntry*  playerSprite = &oamMain.oamMemory[PLAYER_SPRITE];
-		for (i = 0; i < numberSprites; i++) {
+		for (i = 0; i < maxSpriteSpawns; i++) {
 			if(i != PLAYER_SPRITE) {
 				SpriteEntry* spriteEntry = &oamMain.oamMemory[i]; //Sprite with id = i	
 				if(!spriteEntry->isHidden) {	
@@ -126,7 +126,7 @@ bool isSpriteSpawnScheduled() {
 
 void spriteSpawns(){
 
-	iprintf("\x1b[08;01H\x1b[39m Sprites: %d spawn: %5s", numberSprites, spawnScheduled ? "\x1b[42mtrue\x1b[39m" : "\x1b[41mfalse\x1b[39m");
+	iprintf("\x1b[08;01H\x1b[39m Sprites:%d spawnScheduled:%5s", numberSprites, spawnScheduled ? "\x1b[42mtrue" : "\x1b[41mfalse");
 
 	int i;
 	for (i = 0; i < maxSpriteSpawns && spawnScheduled; i++) {				

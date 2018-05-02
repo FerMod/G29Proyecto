@@ -69,7 +69,7 @@ void updateSprites() {
 		scheduleSpriteMove();
 	}
 
-	iprintf("\x1b[07;1H spawn billete: %5s (%3d)\x1b[0K", canSpawnSprite() ? "\x1b[42mtrue\x1b[39m" : "\x1b[41mfalse\x1b[39m", spawnCountdown);
+	iprintf("\x1b[07;1H canSpawnSprite: %5s (%3d)\x1b[0K", canSpawnSprite() ? "\x1b[42mtrue\x1b[39m" : "\x1b[41mfalse\x1b[39m", spawnCountdown);
 	if(canSpawnSprite()) {
 		if(spawnCountdown == 0) {
 			scheduleSpriteSpawn();
