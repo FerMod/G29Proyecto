@@ -2,12 +2,14 @@
 screenText.h
 -------------------------------------*/
 
-extern void setStartTextVisible();
+void setStartTextVisible();
 
-extern bool isStartTextVisible();
+bool isStartTextVisible();
 
-extern void showStartText();
+void showStartText();
 
-extern void hideStartText();
+void hideStartText();
 
-extern void toggleStartText();
+void toggleStartText();
+
+void showFinalScoreText();

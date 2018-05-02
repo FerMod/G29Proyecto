@@ -8,6 +8,7 @@
 #include "defines.h"
 #include "sprites.h"
 #include "spriteManager.h"
+#include "screenText.h"
 
 //bool keyPressed = false;
 // int pressedKey = -1;
@@ -46,6 +47,7 @@ void IntTec() {
 	if(estado == PARTIDA) {
 		switch(TeclaPulsada()) {
 			case B:
+				showFinalScoreText();				
 				estado = FIN_PARTIDA;
 				debugPressedKey("B", "interrupcion");
 				break;

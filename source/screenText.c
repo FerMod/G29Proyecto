@@ -12,6 +12,7 @@
 #include <stdbool.h>
 #include "defines.h"
 #include "sprites.h"
+#include "temporizadores.h"
 
 bool startTextVisible = false;
 
@@ -43,5 +44,19 @@ void toggleStartText() {
 	} else {
 		hideStartText();
 	}
+}
+
+void showFinalScoreText() {
+	iprintf("\x1b[05;00H\x1b[0J");
+	iprintf("\x1b[05;00H  +--------------------------+  ");
+	iprintf("\x1b[06;00H  |     Fin de Partida       |  ");
+	iprintf("\x1b[07;00H  +--------------------------+  ");
+	
+	iprintf("\x1b[10;02H\x1b[43mPuntuacion Final:\x1b[39m");
+	iprintf("\x1b[11;02H\x1b[43m%04d\x1b[39m", getPoints());
+
+	iprintf("\x1b[14;02H\x1b[43mTiempo:\x1b[39m");
+	iprintf("\x1b[15;02H\x1b[43m%d s\x1b[39m", getTime());
+
 }
 

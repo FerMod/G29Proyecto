@@ -7,7 +7,10 @@ temporizadores.h
 
 #define SPAWN_TIME 1024 //2s
 
-extern void IntTemp();
+void IntTemp();
+
+int getTime();
+void setTime(int t);
 
 void updateSprites();
 

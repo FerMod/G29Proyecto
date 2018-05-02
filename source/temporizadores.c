@@ -25,7 +25,7 @@ int dropSpeed = 256;
 // Rutina de atencion a la interrupcion del temporizador
 void IntTemp() {
 
-	if(estado != FIN) {
+	if(estado != FIN && estado != FIN_PARTIDA) {
 		if(ticks==513) {
 			ticks = 0;
 		}		
@@ -53,6 +53,14 @@ void IntTemp() {
 	// consoleSelect(&topScreen);
 	iprintf("\x1b[22;1H\x1b[39m ticks: %3d\x1b[0K", ticks);
 	
+}
+
+int getTime() {
+	return timer;
+}
+
+void setTime(int t) {
+	timer = t;
 }
 
 void updateSprites() {

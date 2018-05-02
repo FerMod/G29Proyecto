@@ -160,7 +160,7 @@ int main() {
 				estadoPartida();
 				break;
 			case FIN_PARTIDA:
-				//Mostrar puntuacion
+				estadoFinPartida();
 				break;
 			case FIN:
 				estadoFin();
@@ -192,20 +192,23 @@ void estadoInicio() {
 }
 
 void estadoPartida() {
-	iprintf("\x1b[21;01H\x1b[39m Time: %d s\x1b[0K", timer);
-	//consumePlayerInput();
-	//redrawSprites();
-	spriteSpawns();
-	movePlayerSprite();
-	moveSprites();
-	checkPlayerTouch();
-
-	iprintf("\x1b[15;1H\x1b[43m Puntuacion: %04d\x1b[0K", getPoints());
-
+	if(!isGameOver()) {
+		iprintf("\x1b[21;01H\x1b[39m Time: %d s\x1b[0K", timer);
+		//consumePlayerInput();
+		//redrawSprites();
+		spriteSpawns();
+		movePlayerSprite();
+		moveSprites();
+		checkPlayerTouch();
+		//TODO: Incrementar dificultad (num billetes, velocidad)
+		updateDifficulty();
+		iprintf("\x1b[15;1H\x1b[43m Puntuacion: %04d\x1b[0K", getPoints());
+	} else {
+		estado = FIN_PARTIDA;	
+	}
 }
 
 void estadoFinPartida() {
-	// MostrarPuntuacion
 	switch(tecla) {
 		case START:
 			debugPressedKey("A", "encuesta");
@@ -228,13 +231,22 @@ void consumePlayerInput() {
 		case DERECHA:
 			tecla = DERECHA;
 			break;
+/*
 		// case IZQUIERDA:
 		// 	break;			
 		// case ARRIBA:
 		// 	break;
 		// case ABAJO:
 		// 	break;
+		default:
+			tecla = -1;
+			break;
+*/
 	}
+}
+
+void updateDifficulty() {
+	
 }
 
 void setPoints(int num) {

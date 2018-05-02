@@ -17,6 +17,8 @@
 bool moveScheduled = false;
 bool spawnScheduled = false;
 
+bool gameOver = false;
+
 int numberSprites = 0;
 int maxSpriteSpawns = 1;
 
@@ -99,7 +101,8 @@ void moveSprites() {
 
 					if(!canSpriteMoveY(spriteEntry->y)) {
 						deleteSprite(i, spriteEntry->x, spriteEntry->y);
-						decreasePoints();
+						//decreasePoints();
+						setGameOver(true);
 					}
 					
 					scheduleOamUpdate();
@@ -122,15 +125,18 @@ bool isSpriteSpawnScheduled() {
 }
 
 void spriteSpawns(){
+
 	iprintf("\x1b[08;01H\x1b[39m Sprites: %d spawn: %5s", numberSprites, spawnScheduled ? "\x1b[42mtrue\x1b[39m" : "\x1b[41mfalse\x1b[39m");
+
 	int i;
-	for (i = 0; i <= numberSprites && spawnScheduled; i++) {
+	for (i = 0; i < maxSpriteSpawns && spawnScheduled; i++) {				
 		SpriteEntry* spriteEntry = &oamMain.oamMemory[i];
 		if(spriteEntry->isHidden) {
 			spawnScheduled = false;
 			createSprite(i, getRandValue(8, 240), 0);
 		}
 	}
+
 }
 
 void movePlayerSprite() {
@@ -236,6 +242,11 @@ void redrawSprites() {
 	}
 }
 
-// int getRandValue(int min, int max) {
-// 	return (rand()%(max-min))+min;
-// }
+bool isGameOver() {
+	return gameOver;
+}
+
+void setGameOver(bool b) {
+	gameOver = b;
+}
+

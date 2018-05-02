@@ -44,6 +44,7 @@ bool checkSpriteOverlap(SpriteEntry* sprite1, SpriteEntry* sprite2);
 
 void checkPlayerTouch();
 
-//int getRandValue(int min, int max);
+bool isGameOver();
+void setGameOver(bool b);
 
 #endif // SPRITE_MANAGER_H_
