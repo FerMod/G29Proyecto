@@ -8,11 +8,15 @@
 
 // Anadir los includes que sean necesarios
 #include <nds.h>
+
 #include <stdio.h>
 #include <stdbool.h>
+
 #include "defines.h"
 #include "sprites.h"
 #include "temporizadores.h"
+
+#include<stdarg.h>
 
 bool startTextVisible = false;
 
@@ -46,7 +50,13 @@ void toggleStartText() {
 	}
 }
 
-void showFinalScoreText() {
+void printHeader() {
+	iprintf("\x1b[02;00H  +--------------------------+  ");
+	iprintf("\x1b[03;00H  | EC 17/18            G29  |  ");
+	iprintf("\x1b[04;00H  +--------------------------+  ");
+}
+
+void printFinalScore() {
 	iprintf("\x1b[05;00H\x1b[0J");
 	iprintf("\x1b[05;00H  +--------------------------+  ");
 	iprintf("\x1b[06;00H  |     Fin de Partida       |  ");
@@ -57,6 +67,17 @@ void showFinalScoreText() {
 
 	iprintf("\x1b[14;02H\x1b[43mTiempo:\x1b[39m");
 	iprintf("\x1b[15;02H\x1b[43m%d s\x1b[39m", getTime());
+}
 
+void printTime(int x, int y, int time) {
+	iprintf("\x1b[%d;%dH\x1b[39mTime: %d s\x1b[0K", x, y, time);
+}
+
+void printScore(int x, int y, int score) {
+	iprintf("\x1b[%d;%dH\x1b[43mPuntuacion: %05d\x1b[0K", x, y, score);
+}
+
+void printPickUpText(int x, int y, bool b) {
+	iprintf("\x1b[%d;%dHpickup:%5s\x1b[0K", b ? "\x1b[42mtrue\x1b[39m" : "\x1b[41mfalse\x1b[39m", x, y, b);
 }
 

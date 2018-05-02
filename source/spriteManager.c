@@ -12,7 +12,7 @@
 #include "sprites.h"
 #include "teclado.h"
 #include "updateScreen.h"
-// #include "player.h"
+#include "screenText.h"
 
 bool moveScheduled = false;
 bool spawnScheduled = false;
@@ -30,13 +30,13 @@ int maxSpriteSpawns = 1;
 void createSprite(int index, int x, int y) {
 	MostrarBillete(index, x, y);
 	numberSprites++;
-	scheduleOamUpdate();
+	scheduleOamMainUpdate();
 }
 
 void deleteSprite(int index, int x, int y) {
 	BorrarBillete(index, x, y);
 	numberSprites--;
-	scheduleOamUpdate();
+	scheduleOamMainUpdate();
 }
 
 void setMaxSpriteSpawns(int max) {
@@ -105,7 +105,7 @@ void moveSprites() {
 						setGameOver(true);
 					}
 					
-					scheduleOamUpdate();
+					scheduleOamMainUpdate();
 
 					//MostrarBillete(i, spriteEntry->x, spriteEntry->y);
 				}
@@ -161,7 +161,7 @@ void movePlayerSprite() {
 
 		bool collision = false; // TODO: Temporal, remove
 		if(canSpriteMove(spriteEntry->x, spriteEntry->y)) {
-			scheduleOamUpdate();
+			scheduleOamMainUpdate();
 		} else {
 			collision = true; // TODO: Temporal, remove
 			spriteEntry->x = x;
@@ -198,10 +198,10 @@ void checkPlayerTouch() {
 
 			SpriteEntry* moneySprite = &oamMain.oamMemory[i]; //Sprite with id = i
 
-			iprintf("\x1b[06;01H pickup:%5s\x1b[0K", checkSpriteOverlap(playerSprite, moneySprite) ? "\x1b[42mtrue\x1b[39m" : "\x1b[41mfalse\x1b[39m");
+			printPickUpText(6, 2, checkSpriteOverlap(playerSprite, moneySprite));
 			if(!moneySprite->isHidden && checkSpriteOverlap(playerSprite, moneySprite)) {
 				deleteSprite(i, moneySprite->x, moneySprite->y);
-				increasePoints();
+				increaseScore();
 			}
 
 
@@ -249,4 +249,3 @@ bool isGameOver() {
 void setGameOver(bool b) {
 	gameOver = b;
 }
-

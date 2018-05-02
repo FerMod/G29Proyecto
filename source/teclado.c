@@ -47,7 +47,7 @@ void IntTec() {
 	if(estado == PARTIDA) {
 		switch(TeclaPulsada()) {
 			case B:
-				showFinalScoreText();				
+				printFinalScore();				
 				estado = FIN_PARTIDA;
 				debugPressedKey("B", "interrupcion");
 				break;

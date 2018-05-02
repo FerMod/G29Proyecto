@@ -40,7 +40,7 @@ int TactilTocada() {
 
 int estado;
 int tecla;
-int points;
+int score;
 
 //---------------------------------------------------
 // main
@@ -106,10 +106,8 @@ int main() {
 	//consoleSelect(&topScreen);
 	/* Incluimos la siguiente cabecera para que cada grupo la modifique con
 	su numero de grupo "xx" en "Gxx". */
-	iprintf("\x1b[02;00H  +--------------------------+  ");
-	iprintf("\x1b[03;00H  | EC 17/18            G29  |  ");
-	iprintf("\x1b[04;00H  +--------------------------+  ");
-
+	printHeader(2, 0);
+	
 //---------------------------------------------------
 
 	interrupciones();
@@ -122,7 +120,6 @@ int main() {
 	// iprintf("\x1b[07;01H\x1b[0m Sprite x: %d y:%d", oamMain.oamMemory[127].x, oamMain.oamMemory[127].y);	
 	// iprintf("\x1b[08;01H\x1b[0m Numero Sprites: %d", oamCountFragments(&oamMain));
 	estado = INICIO;
-
 	tecla = TeclaPulsada();
 	bool exit = false;
 	while(!exit) {
@@ -186,14 +183,14 @@ void estadoInicio() {
 		iprintf("\x1b[05;01H Pantalla tocada");
 		ticks = 0;
 		estado = PARTIDA;
-		points = 0;
+		score = 0;
 		MostrarSobre(120, 172); // Spawn player
 	}
 }
 
 void estadoPartida() {
 	if(!isGameOver()) {
-		iprintf("\x1b[21;01H\x1b[39m Time: %d s\x1b[0K", timer);
+		printTime(21, 2, timer);
 		//consumePlayerInput();
 		//redrawSprites();
 		spriteSpawns();
@@ -202,7 +199,7 @@ void estadoPartida() {
 		checkPlayerTouch();
 		//TODO: Incrementar dificultad (num billetes, velocidad)
 		updateDifficulty();
-		iprintf("\x1b[15;1H\x1b[43m Puntuacion: %04d\x1b[0K", getPoints());
+		printScore(15, 2, getScore());
 	} else {
 		estado = FIN_PARTIDA;	
 	}
@@ -249,20 +246,20 @@ void updateDifficulty() {
 	
 }
 
-void setPoints(int num) {
-	points = num;
+void setScore(int num) {
+	score = num;
 }
 
-void increasePoints() {
-	points++;
+void increaseScore() {
+	score++;
 }
 
-void decreasePoints() {
-	points--;
+void decreaseScore() {
+	score--;
 }
 
-int getPoints() {
-	return points;
+int getScore() {
+	return score;
 }
 
 int getRandValue(int min, int max) {

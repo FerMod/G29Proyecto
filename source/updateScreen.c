@@ -19,16 +19,32 @@ The OAM works with a SpriteEntry and a SpriteRotation struct to manage the attri
 
 #include "sprites.h"
 
-bool updateScheduled = false;
+bool oamMainUpdateScheduled = false;
+bool oamSubUpdateScheduled = false;
 
-void scheduleOamUpdate() {
-	updateScheduled = true;
+void scheduleOamMainUpdate() {
+	oamMainUpdateScheduled = true;
 }
 
+void scheduleOamSubUpdate() {
+	oamSubUpdateScheduled = true;
+}
+
+void scheduleOamUpdate(OamState *oam) {
+	if(oam == &oamMain) {
+		scheduleOamMainUpdate();
+	} else {
+		scheduleOamSubUpdate();
+	}
+}
 
 void IntVBlank() {
-	if(updateScheduled) {
+	if(oamMainUpdateScheduled) {
 		oamUpdate(&oamMain);
-		updateScheduled = false;
+		oamMainUpdateScheduled = false;
+	}
+	if(oamSubUpdateScheduled) {
+		oamUpdate(&oamSub);
+		oamSubUpdateScheduled = false;
 	}
 }

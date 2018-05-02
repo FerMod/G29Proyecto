@@ -144,7 +144,7 @@ void BorrarBillete(int indice, int x, int y) {
 		false			//apply mosaic
 		); 
 	// oamUpdate(&oamMain);
-	scheduleOamUpdate(); // In the next VBlank it will update the OAM
+	scheduleOamMainUpdate(); // In the next VBlank it will update the OAM
 }
 
 void MostrarBillete (int indice, int x, int y){ 
@@ -163,7 +163,7 @@ void MostrarBillete (int indice, int x, int y){
 		false			//apply mosaic
 		); 
 	// oamUpdate(&oamMain);
-	scheduleOamUpdate(); // In the next VBlank it will update the OAM
+	scheduleOamMainUpdate(); // In the next VBlank it will update the OAM
 }
 
 void BorrarSobre(int x, int y){
@@ -182,7 +182,7 @@ void BorrarSobre(int x, int y){
 		false			//apply mosaic
 		); 
 	// oamUpdate(&oamMain);
-	scheduleOamUpdate(); // In the next VBlank it will update the OAM
+	scheduleOamMainUpdate(); // In the next VBlank it will update the OAM
 }
 
 void MostrarSobre (int x, int y){
@@ -201,7 +201,7 @@ void MostrarSobre (int x, int y){
 		true			//apply mosaic
 		); 
 	// oamUpdate(&oamMain);
-	scheduleOamUpdate(); // In the next VBlank it will update the OAM
+	scheduleOamMainUpdate(); // In the next VBlank it will update the OAM
 }
 
 

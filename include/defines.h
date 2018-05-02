@@ -78,10 +78,10 @@ void BorrarSobre(int x, int y);
 
 int getRandValue(int min, int max);
 
-int getPoints();
-void setPoints(int num);
-void increasePoints();
-void decreasePoints();
+int getScore();
+void setScore(int num);
+void increaseScore();
+void decreaseScore();
 
 void consumePlayerInput();
 

@@ -27,7 +27,7 @@ void scheduleSpriteMove();
 void moveSprites();
 
 void scheduleSpriteSpawn();
-void spawnSprites();
+void spriteSpawns();
 bool isSpriteSpawnScheduled();
 
 void redrawSprites();

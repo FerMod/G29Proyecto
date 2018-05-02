@@ -12,4 +12,14 @@ void hideStartText();
 
 void toggleStartText();
 
-void showFinalScoreText();
+void printFinalScore();
+
+void printHeader();
+
+void printTime(int x, int y, int time);
+
+void printScore(int x, int y, int score);
+
+void printPickUpText(int x, int y, bool b);
+
+void test();

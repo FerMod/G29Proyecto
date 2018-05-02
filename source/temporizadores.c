@@ -73,7 +73,6 @@ void updateSprites() {
 	if(canSpawnSprite()) {
 		if(spawnCountdown == 0) {
 			scheduleSpriteSpawn();
-			//createSprite(0, getRandValue(8, 240), 0);
 			spawnCountdown = SPAWN_TIME;
 		} else {
 			spawnCountdown--;
