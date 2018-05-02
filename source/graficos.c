@@ -10,8 +10,10 @@ dovoto y otro de Jaeden Amero
 
 /* Definir el sistema de video */
 void initVideo() {
-    /*  Mapear la memoria VRAM para mostrar graficos en las dos pantallas. */
 
+    // https://mtheall.com/banks.html#A=MBG0&B=MBG1&C=SBG&D=SOBJ&E=MOBJ
+
+    /*  Mapear la memoria VRAM para mostrar graficos en las dos pantallas. */
     vramSetMainBanks(VRAM_A_MAIN_BG_0x06000000,
                      VRAM_B_MAIN_BG_0x06020000,
                      VRAM_C_SUB_BG_0x06200000,
