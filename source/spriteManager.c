@@ -45,7 +45,7 @@ void deleteSprite(int index) {
 
 void createHearts() {
 	int spriteIndex = 127 - MAX_LIFES;
-	int separation = 2;
+	int separation = 0;
 	int i;
 	for (i = 0; i < MAX_LIFES; i++) {
 		heart[i].index = spriteIndex + i;
@@ -56,7 +56,7 @@ void createHearts() {
 }
 
 void updateHearts() {
-	int separation = 2;
+	int separation = 0;
 	int i;
 	for (i = 0; i < MAX_LIFES; i++) {
 		heart[i].isFull = i < lives;
@@ -408,11 +408,15 @@ int getMaxLifes() {
 }
 
 void increaseLives() {
-	lives++;
+	if(lives < MAX_LIFES){
+		lives++;
+	}
 }
 
 void decreaseLives() {
-	lives--;
+	if(lives > 0){
+		lives--;
+	}
 }
 
 bool isGameOver() {
