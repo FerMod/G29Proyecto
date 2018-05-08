@@ -18,9 +18,9 @@ int ticks = 0;
 int timer = 0;
 
 int spawnCooldown = 1024; // Max ticks that need to pass, before allowing another spawn
-
 int spawnCountdown = 0;
-int dropSpeed = 256;
+
+int dropSpeed = 128; // Ticks to make a move
 
 // Rutina de atencion a la interrupcion del temporizador
 void IntTemp() {
@@ -73,10 +73,31 @@ void updateSprites() {
 	if(canSpawnSprite()) {
 		if(spawnCountdown == 0) {
 			scheduleSpriteSpawn();
-			spawnCountdown = SPAWN_TIME;
+			spawnCountdown = spawnCooldown;
 		} else {
 			spawnCountdown--;
 		}
 	}
 
+}
+
+void setDropSpeed(int speed) {
+	if(speed > 0) {
+		dropSpeed = speed;
+	}
+}
+
+int getDropSpeed() {
+	return dropSpeed;
+}
+
+void setSpawnCooldown(int cooldown) {
+	if(cooldown >= 0) {
+		spawnCooldown = cooldown;
+	}	
+}
+
+
+int getSpawnCooldown() {
+	return spawnCooldown;
 }
