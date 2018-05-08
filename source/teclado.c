@@ -48,7 +48,7 @@ void IntTec() {
 		switch(TeclaPulsada()) {
 			case B:
 				printFinalScore();				
-				estado = FIN_PARTIDA;
+				setGameState(FIN_PARTIDA);
 				debugPressedKey("B", "interrupcion");
 				break;
 			case IZQUIERDA:
@@ -58,7 +58,7 @@ void IntTec() {
 		}
 	}
 	if(TeclaPulsada() == SELECT) {
-		estado = FIN;
+		setGameState(FIN);
 		debugPressedKey("SELECT", "interrupcion");
 	}
 }

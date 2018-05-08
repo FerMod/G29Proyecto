@@ -41,6 +41,10 @@ int TactilTocada() {
 int estado;
 int tecla;
 int score;
+int spawnedMoney;
+int pickedUpMoney;
+
+bool pickedUpMoneyChanged = false;
 
 //---------------------------------------------------
 // main
@@ -119,7 +123,7 @@ int main() {
 	// iprintf("\x1b[06;01H\x1b[0m Sprite x: %d y:%d", oamMain.oamMemory[1].x, oamMain.oamMemory[1].y);
 	// iprintf("\x1b[07;01H\x1b[0m Sprite x: %d y:%d", oamMain.oamMemory[127].x, oamMain.oamMemory[127].y);	
 	// iprintf("\x1b[08;01H\x1b[0m Numero Sprites: %d", oamCountFragments(&oamMain));
-	estado = INICIO;
+	setGameState(INICIO);	
 	tecla = TeclaPulsada();
 	bool exit = false;
 	while(!exit) {
@@ -181,10 +185,15 @@ void estadoInicio() {
 			hideStartText();
 		}
 		iprintf("\x1b[05;01H Pantalla tocada");
-		ticks = 0;
-		estado = PARTIDA;
-		score = 0;
-		MostrarSobre(120, 172); // Spawn player
+		// estado = PARTIDA;
+		// ticks = 0;
+		// score = 0;
+		// spawnedMoney = 0;
+		// pickedUpMoney = 0;
+		// setLives(MAX_LIFES);
+		// createHearts();
+		// MostrarSobre(120, 172); // Spawn player
+		setGameState(PARTIDA);
 	}
 }
 
@@ -197,19 +206,17 @@ void estadoPartida() {
 		movePlayerSprite();
 		moveSprites();
 		checkPlayerTouch();
-		//TODO: Incrementar dificultad (num billetes, velocidad)
-		updateDifficulty();
+		updateDifficulty(pickedUpMoney); // Incrementar dificultad (num billetes, velocidad, etc.)
 		printScore(15, 2, getScore());
 	} else {
-		estado = FIN_PARTIDA;	
+		setGameState(FIN_PARTIDA);
 	}
 }
-
 void estadoFinPartida() {
 	switch(tecla) {
 		case START:
 			debugPressedKey("A", "encuesta");
-			estado = PARTIDA;
+			setGameState(PARTIDA);
 			break;
 	}
 }
@@ -218,9 +225,7 @@ void estadoFin() {
 	if(isStartTextVisible()) {
 		hideStartText();
 	}
-
     iprintf("\x1b[18;01H\x1b[39m Fin de programa");
-
 }
 
 void consumePlayerInput() {
@@ -242,8 +247,63 @@ void consumePlayerInput() {
 	}
 }
 
-void updateDifficulty() {
-	
+int getGameState() {
+	return estado;
+}
+
+void setGameState(int newState) {
+	estado = newState;
+	switch(newState) {
+		case INICIO:
+			break;
+		case PARTIDA:
+			ticks = 0;
+			score = 0;
+			spawnedMoney = 0;
+			pickedUpMoney = 0;
+			setLives(MAX_LIFES);
+			createHearts();
+			resetDifficulty();
+			MostrarSobre(120, 172); // Spawn player		
+			break;
+		case FIN_PARTIDA:
+			clearSprites();
+			break;
+		case FIN:
+			break;
+	}
+}
+
+void resetDifficulty() {
+	setMaxSpriteSpawns(1);
+	setSpawnCooldown(1024);
+	setDropSpeed(256);
+	pickedUpMoneyChanged = false;
+}
+
+void updateDifficulty(int pickedMoney) {
+	if(pickedUpMoneyChanged){
+		
+		//setSpawnCooldown();
+		//setDropSpeed();
+		//setMaxSpriteSpawns();
+		//getMaxSpriteSpawns();
+
+		if(pickedMoney % 3 == 0) {
+			setMaxSpriteSpawns(getMaxSpriteSpawns()+1);
+		}
+
+		if(pickedMoney % 4 == 0) {
+			setDropSpeed(getDropSpeed()-1);
+		}
+
+		if(pickedMoney % 7 == 0) {
+			setSpawnCooldown(getSpawnCooldown()-1);
+		}
+
+		pickedUpMoneyChanged = false;
+
+	}
 }
 
 void setScore(int num) {
@@ -264,6 +324,32 @@ int getScore() {
 
 int getRandValue(int min, int max) {
 	return (rand() % (max-min)) + min;
+}
+
+int getSpanwedMoney() {
+	return spawnedMoney;
+}
+
+void setSpanwedMoney(int num) {
+	spawnedMoney = num;
+}
+
+void increaseSpawnedMoney() {
+	spawnedMoney++;
+}
+
+int getPickedUpMoney() {
+	return pickedUpMoney;
+}
+
+void setPickedUpMoney(int num) {
+	pickedUpMoney = num;
+	pickedUpMoneyChanged = true;
+}
+
+void increasePickedUpMoney() {
+	pickedUpMoney++;
+	pickedUpMoneyChanged = true;
 }
 
 /*
