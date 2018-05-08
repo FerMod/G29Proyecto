@@ -59,7 +59,7 @@ void printHeader() {
 void printFinalScore() {
 	iprintf("\x1b[05;00H\x1b[0J");
 	iprintf("\x1b[05;00H  +--------------------------+  ");
-	iprintf("\x1b[06;00H  |     Fin de Partida       |  ");
+	iprintf("\x1b[06;00H  |     \x1b[41mFin de Partida\x1b[39m       |  ");
 	iprintf("\x1b[07;00H  +--------------------------+  ");
 	
 	iprintf("\x1b[10;02H\x1b[43mPuntuacion Final:\x1b[39m");
@@ -73,11 +73,16 @@ void printTime(int x, int y, int time) {
 	iprintf("\x1b[%d;%dH\x1b[39mTime: %d s\x1b[0K", x, y, time);
 }
 
+void printStats(int x, int y, int totalSpawned, int pickedUp) {
+	iprintf("\x1b[%d;%dH\x1b[43mBilletes recogidos: %05d\x1b[0K", x, y, totalSpawned);
+	iprintf("\x1b[%d;%dH\x1b[43mBilletes perdidos: %05d\x1b[0K", ++x, ++y, totalSpawned-pickedUp);
+}
+
 void printScore(int x, int y, int score) {
 	iprintf("\x1b[%d;%dH\x1b[43mPuntuacion: %05d\x1b[0K", x, y, score);
 }
 
 void printPickUpText(int x, int y, bool b) {
-	iprintf("\x1b[%d;%dH\x1b[39mpickup:%5s\x1b[0K", x, y, b ? "\x1b[42mtrue" : "\x1b[41mfalse");
+	iprintf("\x1b[%d;%dH\x1b[39mpickup:%5s\x1b[39m\x1b[0K", x, y, b ? "\x1b[42mtrue" : "\x1b[41mfalse");
 }
 
