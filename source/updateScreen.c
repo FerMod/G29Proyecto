@@ -15,9 +15,6 @@ The OAM works with a SpriteEntry and a SpriteRotation struct to manage the attri
 #include "updateScreen.h"
 
 #include <nds.h>
-#include <stdio.h>
-
-#include "sprites.h"
 
 bool oamMainUpdateScheduled = false;
 bool oamSubUpdateScheduled = false;
@@ -30,12 +27,9 @@ void scheduleOamSubUpdate() {
 	oamSubUpdateScheduled = true;
 }
 
-void scheduleOamUpdate(OamState *oam) {
-	if(oam == &oamMain) {
-		scheduleOamMainUpdate();
-	} else {
-		scheduleOamSubUpdate();
-	}
+void scheduleOamUpdate() {
+	scheduleOamMainUpdate();
+	scheduleOamSubUpdate();
 }
 
 void IntVBlank() {
