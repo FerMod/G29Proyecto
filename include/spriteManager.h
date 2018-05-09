@@ -10,7 +10,6 @@ spriteManager.h
 #define PLAYER_SPRITE 127
 #define MAX_MONEY_SPRITES 10
 #define MAX_LIFES 3
-// #define MAX_PICKUPS 3
 
 extern int numberSprites;
 extern int maxSpriteSpawns;
@@ -34,8 +33,6 @@ void clearSprites();
 void setMaxSpriteSpawns(int max);
 int getMaxSpriteSpawns();
 bool canSpawnSprite();
-
-void printInfo();
 
 void scheduleSpriteMove();
 void moveSprites();

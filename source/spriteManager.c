@@ -25,8 +25,6 @@ int maxSpriteSpawns = 1;
 Heart heart[MAX_LIFES];
 int lives = MAX_LIFES;
 
-// Pickup pickup[MAX_PICKUPS];
-// int numberPickups = 0;
 Pickup pickup;
 bool pickupCreated = false;
 
@@ -73,34 +71,21 @@ void deleteHearts() {
 }
 
 void createPickup() {
-	// bool pickupCreated = false;
-	// int spriteIndex = MAX_MONEY_SPRITES;
-	// int i;
-	// for (i = 0; i < MAX_PICKUPS || !pickupCreated; i++) {
-	// 	// Let it have a % chance to appear
-	// 	if(getRandValue(1, 1000) <= 1) {
-	// 		pickupCreated = true;
-	// 		pickup[i].index = spriteIndex + i;
-	// 		pickup[i].type = HEALTH;
-	// 		showPickup(pickup[i].index, getRandValue(8, 240), 0, pickup[i].type);
-	// 		numberPickups++;
-	// 	}
-	// }
 
 	// Blue shell effect
 	// Less lives, gives more healing chances
  	if(!pickupCreated && getRandValue(1, 100) <= 5 * (MAX_LIFES - getLives()) ) {
-		//pickupCreated = true;
 		pickup.index = MAX_MONEY_SPRITES;
 		pickup.type = HEALTH;
 		showPickup(pickup.index, getRandValue(8, 240), 0, pickup.type);
 		pickupCreated = true;
 	}
+
 }
 
 void deletePickup(int index) {
 	hideSprite(index);
-	// numberPickups--;
+	pickupCreated = false;
 }
 
 void clearMoneySprites() {
@@ -136,14 +121,6 @@ bool canSpawnSprite() {
 	return (numberSprites < maxSpriteSpawns);
 }
 
-void printInfo() {
-	int i;
-	for (i = 0; i < MAX_MONEY_SPRITES; i++) {
-		//Sprite* sprite = spriteArray[i];
-		//iprintf("Sprite[%d] = (x:%d, y:%d)\x1b[0m\n", i, sprite->x, sprite->y);
-	}
-}
-
 void scheduleSpriteMove() {
 	moveScheduled = true;
 }
@@ -159,6 +136,7 @@ void moveSprites() {
 }
 
 void moveMoney() {
+
 	int i;
 	for (i = 0; i < maxSpriteSpawns; i++) {
 		SpriteEntry* spriteEntry = &oamMain.oamMemory[i]; //Sprite with id = i	
@@ -169,12 +147,10 @@ void moveMoney() {
 			// Move random to the left or right, to give more 'leaf' sensation
 			switch(getRandValue(0, 2)) {
 				case 0:
-					//sprite->x = sprite->x+4;
 					spriteEntry->x += 4; 
 					break;
 
 				case 1:
-					//sprite->x = sprite->x-4;
 					spriteEntry->x -= 4;
 					break;
 			}
@@ -191,36 +167,27 @@ void moveMoney() {
 			}
 			
 			scheduleOamMainUpdate();
-
-			//MostrarBillete(i, spriteEntry->x, spriteEntry->y);
 		}
 	}
+
 }
 
-void movePickups() {
+void movePickups() {	
+	
+	if(pickupCreated) {
+		SpriteEntry* spriteEntry = &oamMain.oamMemory[MAX_MONEY_SPRITES];	
 
-	// if(numberPickups > 0) {
-		// int i;
-		// for (i = 0; i < MAX_PICKUPS; i++) {
+		if(!spriteEntry->isHidden) {	
+			
+			spriteEntry->y += 8;
 
-			// SpriteEntry* spriteEntry = &oamMain.oamMemory[pickup[i].index];	
-			if(pickupCreated) {
-				SpriteEntry* spriteEntry = &oamMain.oamMemory[MAX_MONEY_SPRITES];	
-
-				if(!spriteEntry->isHidden) {	
-					
-					spriteEntry->y += 8;
-
-					if(!canSpriteMoveY(spriteEntry->y)) {
-						// deletePickup(i);
-						deletePickup(pickup.index);
-					}
-					
-					scheduleOamMainUpdate();
-				}
+			if(!canSpriteMoveY(spriteEntry->y)) {
+				deletePickup(pickup.index);
 			}
-		// }
-	// }
+			
+			scheduleOamMainUpdate();
+		}
+	}
 
 }
 
@@ -234,7 +201,7 @@ bool isSpriteSpawnScheduled() {
 
 void spriteSpawns(){
 
-	iprintf("\x1b[08;01H\x1b[39m Sprites:%d spawnScheduled:%5s", numberSprites, spawnScheduled ? "\x1b[42mtrue" : "\x1b[41mfalse");
+	//iprintf("\x1b[08;01H\x1b[39m Sprites:%d spawnScheduled:%5s", numberSprites, spawnScheduled ? "\x1b[42mtrue" : "\x1b[41mfalse");
 
 	int i;
 	for (i = 0; i < maxSpriteSpawns && spawnScheduled; i++) {				
@@ -249,7 +216,7 @@ void spriteSpawns(){
 }
 
 void movePlayerSprite() {
-	//if(playerInput.x != 0 || playerInput.y != 0) {
+
 	if(tecla != -1) {
 		SpriteEntry* spriteEntry = &oamMain.oamMemory[PLAYER_SPRITE];
 
@@ -268,19 +235,19 @@ void movePlayerSprite() {
 			spriteEntry->y--;
 		}
 
-		bool collision = false; // TODO: Temporal, remove
+		// bool collision = false; // TODO: Temporal, remove
 		if(canSpriteMove(spriteEntry->x, spriteEntry->y)) {
 			scheduleOamMainUpdate();
 		} else {
-			collision = true; // TODO: Temporal, remove
+			// collision = true; // TODO: Temporal, remove
 			spriteEntry->x = x;
 			spriteEntry->y = y;
 		}
 
-		iprintf("\x1b[05;01H x:%3d y:%3d collision: %5s\x1b[0K", x, y, collision ? "\x1b[42mtrue\x1b[39m" : "\x1b[41mfalse\x1b[39m");
-
+		// iprintf("\x1b[05;01H x:%3d y:%3d collision: %5s\x1b[0K", x, y, canSpriteMove(spriteEntry->x, spriteEntry->y) ? "\x1b[42mtrue\x1b[39m" : "\x1b[41mfalse\x1b[39m");
 
 	}
+
 }
 
 
@@ -310,7 +277,7 @@ void checkPlayerTouchMoney() {
 
 		SpriteEntry* moneySprite = &oamMain.oamMemory[i]; //Sprite with id = i
 
-		printPickUpText(6, 2, checkSpriteOverlap(playerSprite, moneySprite));
+		// printPickUpText(6, 2, checkSpriteOverlap(playerSprite, moneySprite));
 		if(!moneySprite->isHidden && checkSpriteOverlap(playerSprite, moneySprite)) {
 			deleteSprite(i);
 			increaseScore();
@@ -324,35 +291,21 @@ void checkPlayerTouchMoney() {
 void checkPlayerTouchPickup() {
 	
 	if(pickupCreated) {
+
 		SpriteEntry*  playerSprite = &oamMain.oamMemory[PLAYER_SPRITE];
-
-		// int i;
-		// for (i = 0; i < MAX_PICKUPS; i++) {
-
-		// 	SpriteEntry* pickupSprite = &oamMain.oamMemory[pickup[i].index]; //Sprite with id = i
-
 		SpriteEntry* pickupSprite = &oamMain.oamMemory[MAX_MONEY_SPRITES];
-		printPickUpText(6, 2, checkSpriteOverlap(playerSprite, pickupSprite));
+
+		// printPickUpText(6, 2, checkSpriteOverlap(playerSprite, pickupSprite));
 		if(!pickupSprite->isHidden && checkSpriteOverlap(playerSprite, pickupSprite)) {
-			pickupCreated = false;
 			applyPickupEffect(MAX_MONEY_SPRITES);
-			deleteSprite(MAX_MONEY_SPRITES);
+			deletePickup(MAX_MONEY_SPRITES);
 		}
-
-		// 	printPickUpText(10, 2, checkSpriteOverlap(playerSprite, pickupSprite));
-		// 	if(!pickupSprite->isHidden && checkSpriteOverlap(playerSprite, pickupSprite)) {
-		// 		applyPickupEffect(i);
-		// 		deleteSprite(i);
-		// 	}
-
-		// }
 	}
 
 }
 
 void applyPickupEffect(int index) {
 
-	//switch(pickup[index].type) {
 	switch(pickup.type) {
 		case HEALTH:
 			increaseLives();
@@ -381,18 +334,6 @@ bool checkSpriteOverlap(SpriteEntry* sprite1, SpriteEntry* sprite2) {
 	}
 
 	return true;
-}
-
-//TODO: Remove
-void redrawSprites() {
-	int i;
-	for (i = 0; i < numberSprites; i++) {
-		SpriteEntry spriteEntry = oamMain.oamMemory[i]; //Sprite with id = i
-		if(!spriteEntry.isHidden) {	
-			//Update x/y
-			createSprite(i, spriteEntry.y, spriteEntry.x);
-		}
-	}
 }
 
 int getLives() {

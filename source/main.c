@@ -115,43 +115,10 @@ int main() {
 //---------------------------------------------------
 
 	interrupciones();
-	// MostrarBillete(1, 20, 20);
-	// MostrarBillete(0, 20, 20);
-	// MostrarSobre(100, 120);
-	// SpriteEntry billeteEntry = oamMain.oamMemory[0];
-	// iprintf("\x1b[05;01H\x1b[0m Sprite x: %d y:%d", billeteEntry.x, billeteEntry.y);
-	// iprintf("\x1b[06;01H\x1b[0m Sprite x: %d y:%d", oamMain.oamMemory[1].x, oamMain.oamMemory[1].y);
-	// iprintf("\x1b[07;01H\x1b[0m Sprite x: %d y:%d", oamMain.oamMemory[127].x, oamMain.oamMemory[127].y);	
-	// iprintf("\x1b[08;01H\x1b[0m Numero Sprites: %d", oamCountFragments(&oamMain));
 	setGameState(INICIO);	
 	tecla = TeclaPulsada();
 	bool exit = false;
 	while(!exit) {
-		// Temp ////
-		switch(tecla) {
-			case A:
-				debugPressedKey("A", "encuesta");
-				break;
-			case START:
-				debugPressedKey("START", "encuesta");
-				break;
-			case DERECHA:
-				debugPressedKey("DERECHA", "encuesta");
-				break;		
-			case ARRIBA:
-				debugPressedKey("ARRIBA", "encuesta");
-				break;
-			case ABAJO:
-				debugPressedKey("ABAJO", "encuesta");
-				break;
-			case R:
-				debugPressedKey("R", "encuesta");
-				break;
-			case L:
-				debugPressedKey("L", "encuesta");
-				break;
-		}
-		//////////
 
 		switch(estado) {
 			case INICIO:
@@ -171,7 +138,6 @@ int main() {
 
 		swiWaitForVBlank(); // Halt a thread until the next vertical blank occurs.
 		tecla = TeclaPulsada();
-		//consumePlayerInput();
 
     } // while
 
@@ -185,14 +151,6 @@ void estadoInicio() {
 			hideStartText();
 		}
 		iprintf("\x1b[05;01H Pantalla tocada");
-		// estado = PARTIDA;
-		// ticks = 0;
-		// score = 0;
-		// spawnedMoney = 0;
-		// pickedUpMoney = 0;
-		// setLives(MAX_LIFES);
-		// createHearts();
-		// MostrarSobre(120, 172); // Spawn player
 		setGameState(PARTIDA);
 	}
 }
@@ -201,13 +159,13 @@ void estadoPartida() {
 	if(!isGameOver()) {
 		printTime(21, 2, timer);
 		//consumePlayerInput();
-		//redrawSprites();
 		spriteSpawns();
 		movePlayerSprite();
 		moveSprites();
 		checkPlayerTouch();
 		updateDifficulty(pickedUpMoney); // Incrementar dificultad (num billetes, velocidad, etc.)
 		printScore(15, 2, getScore());
+		printStats(17, 2, getSpanwedMoney(), getPickedUpMoney());
 	} else {
 		setGameState(FIN_PARTIDA);
 	}
@@ -215,7 +173,7 @@ void estadoPartida() {
 void estadoFinPartida() {
 	switch(tecla) {
 		case START:
-			debugPressedKey("A", "encuesta");
+			debugPressedKey("START", "encuesta");
 			setGameState(PARTIDA);
 			break;
 	}
@@ -268,6 +226,7 @@ void setGameState(int newState) {
 			break;
 		case FIN_PARTIDA:
 			clearSprites();
+			printFinalScore();
 			break;
 		case FIN:
 			break;
@@ -283,11 +242,6 @@ void resetDifficulty() {
 
 void updateDifficulty(int pickedMoney) {
 	if(pickedUpMoneyChanged){
-		
-		//setSpawnCooldown();
-		//setDropSpeed();
-		//setMaxSpriteSpawns();
-		//getMaxSpriteSpawns();
 
 		if(pickedMoney % 3 == 0) {
 			setMaxSpriteSpawns(getMaxSpriteSpawns()+1);

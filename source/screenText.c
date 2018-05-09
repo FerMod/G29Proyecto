@@ -57,7 +57,7 @@ void printHeader() {
 }
 
 void printFinalScore() {
-	iprintf("\x1b[05;00H\x1b[0J");
+	consoleClear();
 	iprintf("\x1b[05;00H  +--------------------------+  ");
 	iprintf("\x1b[06;00H  |     \x1b[41mFin de Partida\x1b[39m       |  ");
 	iprintf("\x1b[07;00H  +--------------------------+  ");
@@ -70,12 +70,11 @@ void printFinalScore() {
 }
 
 void printTime(int x, int y, int time) {
-	iprintf("\x1b[%d;%dH\x1b[39mTime: %d s\x1b[0K", x, y, time);
+	iprintf("\x1b[%d;%dH\x1b[39mTime:  %d s\x1b[0K", x, y, time);
 }
 
-void printStats(int x, int y, int totalSpawned, int pickedUp) {
-	iprintf("\x1b[%d;%dH\x1b[43mBilletes recogidos: %05d\x1b[0K", x, y, totalSpawned);
-	iprintf("\x1b[%d;%dH\x1b[43mBilletes perdidos: %05d\x1b[0K", ++x, ++y, totalSpawned-pickedUp);
+void printStats(int x, int y, int pickedUp) {
+	iprintf("\x1b[%d;%dH\x1b[43mBilletes recogidos:  %05d\x1b[0K", x, y, pickedUp);
 }
 
 void printScore(int x, int y, int score) {

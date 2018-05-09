@@ -29,8 +29,6 @@ int TeclaPulsada() {
 	if ((TECLAS_DAT & 0x80) == 0) return ABAJO;
 	if ((TECLAS_DAT & 0x100) == 0) return R;
 	if ((TECLAS_DAT & 0x200) == 0) return L;
-
-	//keyPressed = key == 0 ?  false : true;
 		
 	return -1;
 
@@ -49,16 +47,13 @@ void IntTec() {
 			case B:
 				printFinalScore();				
 				setGameState(FIN_PARTIDA);
-				debugPressedKey("B", "interrupcion");
 				break;
 			case IZQUIERDA:
 				tecla = IZQUIERDA;
-				debugPressedKey("IZQUIERDA", "interrupcion");
 				break;
 		}
 	}
 	if(TeclaPulsada() == SELECT) {
 		setGameState(FIN);
-		debugPressedKey("SELECT", "interrupcion");
 	}
 }

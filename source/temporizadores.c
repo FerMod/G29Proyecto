@@ -26,32 +26,34 @@ int dropSpeed = 128; // Ticks to make a move
 void IntTemp() {
 
 	if(estado != FIN && estado != FIN_PARTIDA) {
+		
 		if(ticks==513) {
 			ticks = 0;
 		}		
 		ticks++;
-	}
 
-	switch(estado) {
-		case INICIO:
-			if(ticks==256 || ticks==512) {
-				toggleStartText();
-			}
-			break;
-		case PARTIDA:
-			if(ticks==512) {
-				timer++;
-			}
-			updateSprites();	
-			break;
-		case FIN_PARTIDA:
-			break;
-		case FIN:
-			break;
-	}
+		switch(estado) {
+			case INICIO:
+				if(ticks==256 || ticks==512) {
+					toggleStartText();
+				}
+				break;
+			case PARTIDA:
+				if(ticks==512) {
+					timer++;
+				}
+				updateSprites();	
+				break;
+			case FIN_PARTIDA:
+				break;
+			case FIN:
+				break;
+		}
 
-	// consoleSelect(&topScreen);
-	iprintf("\x1b[22;1H\x1b[39m ticks: %3d\x1b[0K", ticks);
+		// consoleSelect(&topScreen);
+		iprintf("\x1b[22;1H\x1b[39m ticks: %3d\x1b[0K", ticks);
+
+	}
 	
 }
 
