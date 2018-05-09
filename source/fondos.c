@@ -18,6 +18,9 @@ static const int DMA_CHANNEL = 3;
 
 /* Procedimiento para configurar el sistema de fondos. */
 void initFondos() {
+
+    // https://mtheall.com/vram.html#T2=6&MB2=8&S2=0&T3=6&MB3=0&S3=2
+
     /*  Establecer la afinidad del fondo 3 de la pantalla principal con color de 16 bits. */
     REG_BG3CNT = BG_BMP16_256x256 |
                  BG_BMP_BASE(0) | // La direccion inicial de memoria

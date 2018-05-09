@@ -9,10 +9,14 @@ dovoto y otro de Jaeden Amero
 #include <unistd.h>
 #include "sprites.h"
 #include "defines.h"
+#include "updateScreen.h"
 
 u16* gfxBillete;
 u16* gfxSobre;
-
+u16* gfxFullHeart;
+u16* gfxEmptyHeart;
+u16* gfxHealthPickup;
+// u16* gfxClearPickup;
 
 /* Inicializar la memoria de Sprites. */
 void initSpriteMem() {
@@ -22,8 +26,11 @@ void initSpriteMem() {
 	oamInit(&oamSub, SpriteMapping_1D_32, false);
 
 	gfxBillete = oamAllocateGfx(&oamMain, SpriteSize_16x16, SpriteColorFormat_256Color);
-	gfxSobre   = oamAllocateGfx(&oamMain, SpriteSize_16x16, SpriteColorFormat_256Color);
-
+	gfxSobre = oamAllocateGfx(&oamMain, SpriteSize_16x16, SpriteColorFormat_256Color);
+	gfxFullHeart = oamAllocateGfx(&oamMain, SpriteSize_16x16, SpriteColorFormat_256Color);
+	gfxEmptyHeart = oamAllocateGfx(&oamMain, SpriteSize_16x16, SpriteColorFormat_256Color);
+	gfxHealthPickup = oamAllocateGfx(&oamMain, SpriteSize_16x16, SpriteColorFormat_256Color);
+	//gfxClearPickup = oamAllocateGfx(&oamMain, SpriteSize_16x16, SpriteColorFormat_256Color);
 }
 
 
@@ -63,9 +70,9 @@ void establecerPaletaPrincipal() {
  * colores posibles en la pantalla secundaria. El 0 es transparente y los no definidos son negros.
  */
 void establecerPaletaSecundaria() {
-   SPRITE_PALETTE_SUB[1] = RGB15(0,31,0);   // los pixels a 1 se mostraran verdes
-   SPRITE_PALETTE_SUB[2] = RGB15(31,31,31); // los pixels a 1 se mostraran blancos
-   SPRITE_PALETTE_SUB[3] = RGB15(31,31,0);  // los pixels a 1 se mostraran amarillos
+	SPRITE_PALETTE_SUB[1] = RGB15(0,31,0);   // los pixels a 1 se mostraran verdes
+	SPRITE_PALETTE_SUB[2] = RGB15(31,31,31); // los pixels a 1 se mostraran blancos
+	SPRITE_PALETTE_SUB[3] = RGB15(31,31,0);  // los pixels a 1 se mostraran amarillos
 }
 
 
@@ -125,90 +132,238 @@ u8 Billete[256] =
 	23,23,21,21,0,0,0,0,21,21,21,21,0,0,0,0, // 000021212121212121210000
 };
 
+u8 FullHeart[256] = {
+	0, 0, 0, 6, 6, 6, 0, 0, 0, 0, 6, 1, 1, 1, 6, 0, 
+	0, 6, 1, 3, 3, 1, 1, 6, 6, 1, 3, 3, 1, 1, 1, 1, 
+	6, 1, 3, 1, 1, 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 
+	6, 1, 3, 1, 1, 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 
+
+	0, 0, 6, 6, 6, 0, 0, 0, 0, 6, 1, 1, 13, 6, 0, 0, 
+	6, 1, 1, 1, 1, 13, 6, 0, 1, 1, 1, 1, 1, 1, 13, 6, 
+	1, 1, 1, 1, 1, 1, 13, 6, 1, 1, 1, 1, 1, 1, 13, 6, 
+	1, 1, 1, 1, 1, 1, 13, 6, 1, 1, 1, 1, 1, 1, 13, 6, 
+
+	0, 6, 1, 1, 1, 1, 1, 1, 0, 0, 6, 1, 1, 1, 1, 1, 
+	0, 0, 0, 6, 1, 1, 1, 1, 0, 0, 0, 0, 6, 1, 1, 1, 
+	0, 0, 0, 0, 0, 6, 1, 1, 0, 0, 0, 0, 0, 0, 6, 1, 
+	0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 
+
+	1, 1, 1, 1, 1, 13, 6, 0, 1, 1, 1, 1, 13, 6, 0, 0, 
+	1, 1, 1, 13, 6, 0, 0, 0, 1, 1, 13, 6, 0, 0, 0, 0, 
+	1, 13, 6, 0, 0, 0, 0, 0, 13, 6, 0, 0, 0, 0, 0, 0, 
+	6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
+
+/*
+0, 0, 0, 6, 6, 6, 0, 0, 0, 0, 6, 0, 0, 0, 6, 0, 
+0, 6, 0, 11, 11, 0, 0, 6, 6, 0, 11, 11, 0, 0, 0, 0, 
+6, 0, 11, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 
+6, 0, 11, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 
+
+0, 0, 6, 6, 6, 0, 0, 0, 0, 6, 0, 0, 11, 6, 0, 0, 
+6, 0, 0, 0, 0, 11, 6, 0, 0, 0, 0, 0, 0, 0, 11, 6, 
+0, 0, 0, 0, 0, 0, 11, 6, 0, 0, 0, 0, 0, 0, 11, 6, 
+0, 0, 0, 0, 0, 0, 11, 6, 0, 0, 0, 0, 0, 0, 11, 6, 
+
+0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 
+0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 
+0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 
+0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 
+
+0, 0, 0, 0, 0, 11, 6, 0, 0, 0, 0, 0, 11, 6, 0, 0, 
+0, 0, 0, 11, 6, 0, 0, 0, 0, 0, 11, 6, 0, 0, 0, 0, 
+0, 11, 6, 0, 0, 0, 0, 0, 11, 6, 0, 0, 0, 0, 0, 0, 
+6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+*/
+
+u8 EmptyHeart[256] = {
+	0, 0, 0, 6, 6, 6, 0, 0, 0, 0, 6, 0, 0, 0, 6, 0, 
+	0, 6, 0, 11, 11, 0, 0, 6, 6, 0, 11, 11, 0, 0, 0, 0, 
+	6, 0, 11, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 
+	6, 0, 11, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 
+
+	0, 0, 6, 6, 6, 0, 0, 0, 0, 6, 0, 0, 11, 6, 0, 0, 
+	6, 0, 0, 0, 0, 11, 6, 0, 0, 0, 0, 0, 0, 0, 11, 6, 
+	0, 0, 0, 0, 0, 0, 11, 6, 0, 0, 0, 0, 0, 0, 11, 6, 
+	0, 0, 0, 0, 0, 0, 11, 6, 0, 0, 0, 0, 0, 0, 11, 6, 
+
+	0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 
+	0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 
+	0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 
+	0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 
+
+	0, 0, 0, 0, 0, 11, 6, 0, 0, 0, 0, 0, 11, 6, 0, 0, 
+	0, 0, 0, 11, 6, 0, 0, 0, 0, 0, 11, 6, 0, 0, 0, 0, 
+	0, 11, 6, 0, 0, 0, 0, 0, 11, 6, 0, 0, 0, 0, 0, 0, 
+	6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
+
+u8 HealthPickup[256] = {
+	0, 0, 0, 6, 6, 6, 0, 0, 0, 0, 6, 1, 1, 1, 6, 0, 
+	0, 6, 1, 3, 3, 1, 1, 6, 6, 1, 3, 3, 1, 1, 1, 4, 
+	6, 1, 3, 1, 1, 1, 1, 4, 6, 1, 1, 1, 1, 1, 1, 1, 
+	6, 1, 3, 1, 1, 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 
+	0, 0, 4, 4, 21, 0, 0, 0, 0, 6, 4, 4, 21, 6, 0, 0, 
+	6, 1, 4, 4, 21, 13, 6, 0, 4, 4, 4, 4, 4, 4, 4, 21, 
+	4, 4, 4, 4, 4, 4, 4, 21, 1, 1, 4, 4, 21, 1, 13, 6, 
+	1, 1, 4, 4, 21, 1, 13, 6, 1, 1, 4, 4, 21, 1, 13, 6, 
+	0, 6, 1, 1, 1, 1, 1, 1, 0, 0, 6, 1, 1, 1, 1, 1, 
+	0, 0, 0, 6, 1, 1, 1, 1, 0, 0, 0, 0, 6, 1, 1, 1, 
+	0, 0, 0, 0, 0, 6, 1, 1, 0, 0, 0, 0, 0, 0, 6, 1, 
+	0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 
+	1, 1, 1, 1, 1, 13, 6, 0, 1, 1, 1, 1, 13, 6, 0, 0, 
+	1, 1, 1, 13, 6, 0, 0, 0, 1, 1, 13, 6, 0, 0, 0, 0, 
+	1, 13, 6, 0, 0, 0, 0, 0, 13, 6, 0, 0, 0, 0, 0, 0, 
+	6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
+
+// ClearPickup[256] {
+// };
+
 /* Para cada Sprite que se quiera llevar a pantalla hay que hacer una de estas funciones. */
 
 void BorrarBillete(int indice, int x, int y) {
-oamSet(&oamMain, //main graphics engine context
-	indice,  //oam index (0 to 127)  
-	x, y,    //x and y pixle location of the sprite
-	0,       //priority, lower renders last (on top)
-	0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
-	SpriteSize_16x16,     
-	SpriteColorFormat_256Color, 
-	gfxBillete,//+16*16/2, 	//pointer to the loaded graphics
-	-1,                  	//sprite rotation data  
-	false,               	//double the size when rotating?
-	true,			//hide the sprite?
-	false, false, 		//vflip, hflip
-	false			//apply mosaic
-	); 
-oamUpdate(&oamMain); 
+	oamSet(&oamMain, //main graphics engine context
+		indice,  //oam index (0 to 127)  
+		x, y,    //x and y pixle location of the sprite
+		1,       //priority, lower renders last (on top)
+		0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
+		SpriteSize_16x16,     
+		SpriteColorFormat_256Color, 
+		gfxBillete,//+16*16/2, 	//pointer to the loaded graphics
+		-1,                  	//sprite rotation data  
+		false,               	//double the size when rotating?
+		true,			//hide the sprite?
+		false, false, 		//vflip, hflip
+		false			//apply mosaic
+		); 
+	// oamUpdate(&oamMain);
+	scheduleOamMainUpdate(); // In the next VBlank it will update the OAM
 }
 
 void MostrarBillete (int indice, int x, int y){ 
-oamSet(&oamMain, //main graphics engine context
-	indice,  //oam index (0 to 127)  
-	x, y,    //x and y pixle location of the sprite
-	0,       //priority, lower renders last (on top)
-	0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
-	SpriteSize_16x16,     
-	SpriteColorFormat_256Color, 
-	gfxBillete,//+16*16/2, 	//pointer to the loaded graphics
-	-1,                  	//sprite rotation data  
-	false,               	//double the size when rotating?
-	false,			//hide the sprite?
-	false, false, 		//vflip, hflip
-	false			//apply mosaic
-	); 
-oamUpdate(&oamMain);  
+	oamSet(&oamMain, //main graphics engine context
+		indice,  //oam index (0 to 127)  
+		x, y,    //x and y pixle location of the sprite
+		1,       //priority, lower renders last (on top)
+		0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
+		SpriteSize_16x16,     
+		SpriteColorFormat_256Color, 
+		gfxBillete,//+16*16/2, 	//pointer to the loaded graphics
+		-1,                  	//sprite rotation data  
+		false,               	//double the size when rotating?
+		false,			//hide the sprite?
+		false, false, 		//vflip, hflip
+		false			//apply mosaic
+		); 
+	// oamUpdate(&oamMain);
+	scheduleOamMainUpdate(); // In the next VBlank it will update the OAM
 }
 
 void BorrarSobre(int x, int y){
-oamSet(&oamMain, //main graphics engine context
-	127,     //oam index (0 to 127)  
-	x, y,    //x and y pixle location of the sprite
-	0,       //priority, lower renders last (on top)
-	0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
-	SpriteSize_16x16,     
-	SpriteColorFormat_256Color, 
-	gfxSobre,//+16*16/2,	//pointer to the loaded graphics
-	-1,                  	//sprite rotation data  
-	false,               	//double the size when rotating?
-	true,			//hide the sprite?
-	false, false, 		//vflip, hflip
-	false			//apply mosaic
-	); 
-oamUpdate(&oamMain); 
+	oamSet(&oamMain, //main graphics engine context
+		127,     //oam index (0 to 127)  
+		x, y,    //x and y pixle location of the sprite
+		2,       //priority, lower renders last (on top)
+		0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
+		SpriteSize_16x16,     
+		SpriteColorFormat_256Color, 
+		gfxSobre,//+16*16/2,	//pointer to the loaded graphics
+		-1,                  	//sprite rotation data  
+		false,               	//double the size when rotating?
+		true,			//hide the sprite?
+		false, false, 		//vflip, hflip
+		false			//apply mosaic
+		); 
+	// oamUpdate(&oamMain);
+	scheduleOamMainUpdate(); // In the next VBlank it will update the OAM
 }
 
 void MostrarSobre (int x, int y){
-oamSet(&oamMain, //main graphics engine context
-	127,     //oam index (0 to 127)  
-	x, y,    //x and y pixle location of the sprite
-	0,       //priority, lower renders last (on top)
-	0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
-	SpriteSize_16x16,     
-
-	SpriteColorFormat_256Color, 
-	gfxSobre,//+16*16/2,	//pointer to the loaded graphics
-	-1,                  	//sprite rotation data  
-	false,               	//double the size when rotating?
-	false,			//hide the sprite?
-	false, false, 		//vflip, hflip
-	false			//apply mosaic
-	); 
-oamUpdate(&oamMain);  
+	oamSet(&oamMain, //main graphics engine context
+		127,     //oam index (0 to 127)  
+		x, y,    //x and y pixle location of the sprite
+		2,       //priority, lower renders last (on top)
+		0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
+		SpriteSize_16x16,
+		SpriteColorFormat_256Color, 
+		gfxSobre,//+16*16/2,	//pointer to the loaded graphics
+		-1,                  	//sprite rotation data  
+		false,               	//double the size when rotating?
+		false,			//hide the sprite?
+		false, false, 		//vflip, hflip
+		true			//apply mosaic
+		); 
+	// oamUpdate(&oamMain);
+	scheduleOamMainUpdate(); // In the next VBlank it will update the OAM
 }
 
+void showHeart(int index, int x, int y, bool isFull) {
+	
+	u16* gfxHeart = isFull ? gfxFullHeart : gfxEmptyHeart;
 
+	oamSet(&oamMain, //main graphics engine context
+		index,  //oam index (0 to 127)  
+		x, y,    //x and y pixle location of the sprite
+		0,       //priority, lower renders last (on top)
+		0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
+		SpriteSize_16x16,     
+		SpriteColorFormat_256Color, 
+		gfxHeart,//+16*16/2, 	//pointer to the loaded graphics
+		-1,                  	//sprite rotation data  
+		false,               	//double the size when rotating?
+		false,			//hide the sprite?
+		false, false, 		//vflip, hflip
+		false			//apply mosaic
+		); 
+	scheduleOamMainUpdate(); // In the next VBlank it will update the OAM
+}
+
+void showPickup(int index, int x, int y, PickupType pickupType) {
+
+	oamSet(&oamMain, //main graphics engine context
+		index,  //oam index (0 to 127)  
+		x, y,    //x and y pixle location of the sprite
+		0,       //priority, lower renders last (on top)
+		0,       //this is the palette index if multiple palettes or the alpha value if bmp sprite	
+		SpriteSize_16x16,     
+		SpriteColorFormat_256Color, 
+		getPickupSprite(pickupType),//+16*16/2, 	//pointer to the loaded graphics
+		-1,                  	//sprite rotation data  
+		false,               	//double the size when rotating?
+		false,			//hide the sprite?
+		false, false, 		//vflip, hflip
+		false			//apply mosaic
+		); 
+	scheduleOamMainUpdate(); // In the next VBlank it will update the OAM
+}
+
+void hideSprite(int index) {
+	SpriteEntry *spriteEntry = &oamMain.oamMemory[index];
+	spriteEntry->isRotateScale = false;
+	spriteEntry->isHidden = true;
+	scheduleOamMainUpdate(); // In the next VBlank it will update the OAM
+}
+
+u16* getPickupSprite(PickupType pickupType){
+	switch (pickupType) {
+		case HEALTH:
+			return gfxHealthPickup;
+		case CLEAR:
+			return;
+	}
+}
 
 void guardarSpritesEnMemoria(){ 
-  int i;
-  for(i = 0; i < 16 * 16 / 2; i++){ //muestra un cuadrado en la memoria de la pantalla principal		
-     gfxBillete[i] = Billete[i*2] | (Billete[(i*2)+1]<<8);
-     gfxSobre[i]   = Sobre[i*2]   | (Sobre[(i*2)+1]<<8);	
-
-  }
+	int i;
+	for(i = 0; i < 16 * 16 / 2; i++){ //muestra un cuadrado en la memoria de la pantalla principal		
+		gfxBillete[i] = Billete[i*2] | (Billete[(i*2)+1]<<8);
+		gfxSobre[i] = Sobre[i*2] | (Sobre[(i*2)+1]<<8);
+		gfxFullHeart[i] = FullHeart[i*2] | (FullHeart[(i*2)+1]<<8);
+		gfxEmptyHeart[i] = EmptyHeart[i*2] | (EmptyHeart[(i*2)+1]<<8);
+		gfxHealthPickup[i] = HealthPickup[i*2] | (HealthPickup[(i*2)+1]<<8);
+		//gfxClearPickup[i] = ClearPickup[i*2] | (ClearPickup[(i*2)+1]<<8);
+	}
 }
 
 

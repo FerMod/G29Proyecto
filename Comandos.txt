@@ -1,4 +1,14 @@
+// Compilar
 make
+
+// Limpiar
+make clean
+
+// Ejecutar .nds
 nocashgba G29-proyecto.nds
 
-make && nocashgba G29-proyecto.nds
+// Para obtner el nombre del directorio actual 
+${PWD##*/}
+
+// Compilar y si no hay errores ejectuar
+make && nocashgba ${PWD##*/}.nds

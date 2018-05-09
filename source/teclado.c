@@ -7,6 +7,11 @@
 #include <stdio.h>
 #include "defines.h"
 #include "sprites.h"
+#include "spriteManager.h"
+#include "screenText.h"
+
+//bool keyPressed = false;
+// int pressedKey = -1;
 
 // Esta funcion tiene que devolver el valor de la tecla pulsada
 int TeclaPulsada() {
@@ -40,16 +45,15 @@ void IntTec() {
 	if(estado == PARTIDA) {
 		switch(TeclaPulsada()) {
 			case B:
-				estado = FIN_PARTIDA;
-				debugPressedKey("B", "interrupcion");
+				printFinalScore();				
+				setGameState(FIN_PARTIDA);
 				break;
 			case IZQUIERDA:
-				debugPressedKey("IZQUIERDA", "interrupcion");
+				tecla = IZQUIERDA;
 				break;
 		}
 	}
 	if(TeclaPulsada() == SELECT) {
-		estado = FIN;
-		debugPressedKey("SELECT", "interrupcion");
+		setGameState(FIN);
 	}
 }

@@ -62,8 +62,42 @@ extern int TactilTocada();
 extern int estado;
 extern int ticks;
 extern int timer;
+extern int playerScore;
+extern int tecla;
+
+void setGameState(int newState);
 
 void estadoInicio();
 void estadoPartida();
 void estadoFinPartida();
 void estadoFin();
+
+void MostrarBillete(int indice, int x, int y);
+void BorrarBillete(int indice, int x, int y);
+
+void MostrarSobre(int x, int y);
+void BorrarSobre(int x, int y);
+
+void showHeart(int index, int x, int y, bool isFull);
+void deleteHeart(int index);
+
+int getRandValue(int min, int max);
+
+int getScore();
+void setScore(int num);
+void increaseScore();
+void decreaseScore();
+
+void resetDifficulty();
+void updateDifficulty(int pickedMoney);
+
+int getSpanwedMoney();
+void setSpanwedMoney(int num);
+void increaseSpawnedMoney();
+
+int getPickedUpMoney();
+void setPickedUpMoney(int num);
+void increasePickedUpMoney();
+
+void consumePlayerInput();
+
