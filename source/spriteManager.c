@@ -74,9 +74,17 @@ void createPickup() {
 
 	// Blue shell effect
 	// Less lives, gives more healing chances
- 	if(!pickupCreated && getRandValue(1, 100) <= 5 * (MAX_LIFES - getLives()) ) {
+ 	if(!pickupCreated && getRandValue(0, 100) <= 5 * (MAX_LIFES - getLives()) ) {
 		pickup.index = MAX_MONEY_SPRITES;
-		pickup.type = HEALTH;
+		pickup.type = HEALTH;				
+		showPickup(pickup.index, getRandValue(8, 240), 0, pickup.type);
+		pickupCreated = true;
+
+	}
+
+	if(!pickupCreated && getRandValue(0, 100) <= 5) {
+		pickup.index = MAX_MONEY_SPRITES;
+		pickup.type = CLEAR;				
 		showPickup(pickup.index, getRandValue(8, 240), 0, pickup.type);
 		pickupCreated = true;
 	}
@@ -92,7 +100,9 @@ void clearMoneySprites() {
 	int i;
 	for (i = 0; i < maxSpriteSpawns; i++) {				
 		deleteSprite(i);
+		decreaseSpawnedMoney();
 	}
+	numberSprites = 0;
 }
 
 void clearSprites() {

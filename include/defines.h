@@ -94,6 +94,7 @@ void updateDifficulty(int pickedMoney);
 int getSpanwedMoney();
 void setSpanwedMoney(int num);
 void increaseSpawnedMoney();
+void decreaseSpawnedMoney();
 
 int getPickedUpMoney();
 void setPickedUpMoney(int num);

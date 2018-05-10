@@ -53,7 +53,7 @@ bool pickedUpMoneyChanged = false;
 int main() {
 
 	/* Definir variables */	
-	touchPosition pos_pantalla;
+	//touchPosition pos_pantalla;
 
 	/* Poner en marcha el motor grafico 2D. */
 	powerOn(POWER_ALL_2D);
@@ -137,7 +137,7 @@ int main() {
 		}
 
 		swiWaitForVBlank(); // Halt a thread until the next vertical blank occurs.
-		tecla = TeclaPulsada();
+		tecla = TeclaPulsada(); //COMENTAR PARA TECLA IZQUIERDA POR ENCUESTA
 
     } // while
 
@@ -150,7 +150,7 @@ void estadoInicio() {
 		if(isStartTextVisible()) {
 			hideStartText();
 		}
-		iprintf("\x1b[05;01H Pantalla tocada");
+		//iprintf("\x1b[05;01H Pantalla tocada");
 		setGameState(PARTIDA);
 	}
 }
@@ -158,14 +158,14 @@ void estadoInicio() {
 void estadoPartida() {
 	if(!isGameOver()) {
 		printTime(21, 2, timer);
-		//consumePlayerInput();
+		//consumePlayerInput(); //DESCOMENTAR PARA TECLA IZQUIERDA POR ENCUESTA
 		spriteSpawns();
 		movePlayerSprite();
 		moveSprites();
 		checkPlayerTouch();
 		updateDifficulty(pickedUpMoney); // Incrementar dificultad (num billetes, velocidad, etc.)
 		printScore(15, 2, getScore());
-		printStats(17, 2, getSpanwedMoney(), getPickedUpMoney());
+		printStats(17, 2,  getPickedUpMoney());
 	} else {
 		setGameState(FIN_PARTIDA);
 	}
@@ -173,7 +173,7 @@ void estadoPartida() {
 void estadoFinPartida() {
 	switch(tecla) {
 		case START:
-			debugPressedKey("START", "encuesta");
+			//debugPressedKey("START", "encuesta");
 			setGameState(PARTIDA);
 			break;
 	}
@@ -215,6 +215,8 @@ void setGameState(int newState) {
 		case INICIO:
 			break;
 		case PARTIDA:
+			consoleClear();
+			printHeader();
 			ticks = 0;
 			score = 0;
 			spawnedMoney = 0;
@@ -290,6 +292,10 @@ void setSpanwedMoney(int num) {
 
 void increaseSpawnedMoney() {
 	spawnedMoney++;
+}
+
+void decreaseSpawnedMoney() {
+	spawnedMoney--;
 }
 
 int getPickedUpMoney() {

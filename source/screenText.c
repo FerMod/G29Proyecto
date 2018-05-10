@@ -74,11 +74,11 @@ void printTime(int x, int y, int time) {
 }
 
 void printStats(int x, int y, int pickedUp) {
-	iprintf("\x1b[%d;%dH\x1b[43mBilletes recogidos:  %05d\x1b[0K", x, y, pickedUp);
+	iprintf("\x1b[%d;%dH\x1b[39mBilletes recogidos:  \x1b[43m%05d\x1b[0K", x, y, pickedUp);
 }
 
 void printScore(int x, int y, int score) {
-	iprintf("\x1b[%d;%dH\x1b[43mPuntuacion: %05d\x1b[0K", x, y, score);
+	iprintf("\x1b[%d;%dH\x1b[39mPuntuacion: \x1b[43m%05d\x1b[0K", x, y, score);
 }
 
 void printPickUpText(int x, int y, bool b) {
