@@ -215,6 +215,8 @@ void setGameState(int newState) {
 		case INICIO:
 			break;
 		case PARTIDA:
+			consoleClear();
+			printHeader();
 			ticks = 0;
 			score = 0;
 			spawnedMoney = 0;
@@ -290,6 +292,10 @@ void setSpanwedMoney(int num) {
 
 void increaseSpawnedMoney() {
 	spawnedMoney++;
+}
+
+void decreaseSpawnedMoney() {
+	spawnedMoney--;
 }
 
 int getPickedUpMoney() {

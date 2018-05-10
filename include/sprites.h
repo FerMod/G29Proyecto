@@ -4,7 +4,7 @@ extern u16* gfxSobre;
 extern u16* gfxFullHeart;
 extern u16* gfxEmptyHeart;
 extern u16* gfxHeartPickup;
-// extern u16* gfxClearPickup;
+extern u16* gfxClearPickup;
 
 typedef enum {
 	HEALTH,

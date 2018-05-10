@@ -16,7 +16,7 @@ u16* gfxSobre;
 u16* gfxFullHeart;
 u16* gfxEmptyHeart;
 u16* gfxHealthPickup;
-// u16* gfxClearPickup;
+u16* gfxClearPickup;
 
 /* Inicializar la memoria de Sprites. */
 void initSpriteMem() {
@@ -30,7 +30,7 @@ void initSpriteMem() {
 	gfxFullHeart = oamAllocateGfx(&oamMain, SpriteSize_16x16, SpriteColorFormat_256Color);
 	gfxEmptyHeart = oamAllocateGfx(&oamMain, SpriteSize_16x16, SpriteColorFormat_256Color);
 	gfxHealthPickup = oamAllocateGfx(&oamMain, SpriteSize_16x16, SpriteColorFormat_256Color);
-	//gfxClearPickup = oamAllocateGfx(&oamMain, SpriteSize_16x16, SpriteColorFormat_256Color);
+	gfxClearPickup = oamAllocateGfx(&oamMain, SpriteSize_16x16, SpriteColorFormat_256Color);
 }
 
 
@@ -217,8 +217,24 @@ u8 HealthPickup[256] = {
 	6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
-// ClearPickup[256] {
-// };
+ClearPickup[256] = {
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 
+	0, 0, 0, 0, 0, 6, 6, 6, 0, 0, 0, 0, 6, 5, 5, 5, 
+	0, 0, 0, 6, 5, 18, 5, 5, 0, 0, 6, 5, 18, 5, 5, 5, 
+	0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 
+	6, 6, 6, 0, 0, 6, 0, 0, 0, 0, 0, 6, 6, 0, 0, 0, 
+	6, 6, 0, 0, 0, 0, 0, 0, 5, 19, 6, 0, 0, 0, 0, 0, 
+	5, 5, 19, 6, 0, 0, 0, 0, 5, 5, 5, 19, 6, 0, 0, 0, 
+	0, 0, 6, 5, 5, 5, 5, 5, 0, 0, 6, 5, 18, 5, 5, 5, 
+	0, 0, 6, 5, 5, 5, 5, 5, 0, 0, 6, 5, 5, 5, 5, 5, 
+	0, 0, 0, 6, 5, 5, 5, 5, 0, 0, 0, 0, 6, 5, 5, 5, 
+	0, 0, 0, 0, 0, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 
+	5, 5, 5, 19, 6, 0, 0, 0, 5, 5, 5, 19, 6, 0, 0, 0, 
+	5, 5, 5, 19, 6, 0, 0, 0, 5, 5, 5, 19, 6, 0, 0, 0, 
+	5, 5, 19, 6, 0, 0, 0, 0, 5, 19, 6, 0, 0, 0, 0, 0, 
+	6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
 
 /* Para cada Sprite que se quiera llevar a pantalla hay que hacer una de estas funciones. */
 
@@ -350,7 +366,7 @@ u16* getPickupSprite(PickupType pickupType){
 		case HEALTH:
 			return gfxHealthPickup;
 		case CLEAR:
-			return;
+			return gfxClearPickup;
 	}
 }
 
@@ -362,7 +378,7 @@ void guardarSpritesEnMemoria(){
 		gfxFullHeart[i] = FullHeart[i*2] | (FullHeart[(i*2)+1]<<8);
 		gfxEmptyHeart[i] = EmptyHeart[i*2] | (EmptyHeart[(i*2)+1]<<8);
 		gfxHealthPickup[i] = HealthPickup[i*2] | (HealthPickup[(i*2)+1]<<8);
-		//gfxClearPickup[i] = ClearPickup[i*2] | (ClearPickup[(i*2)+1]<<8);
+		gfxClearPickup[i] = ClearPickup[i*2] | (ClearPickup[(i*2)+1]<<8);
 	}
 }
 
