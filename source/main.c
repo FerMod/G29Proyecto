@@ -136,7 +136,7 @@ int main() {
 		}
 
 		swiWaitForVBlank(); // Halt a thread until the next vertical blank occurs.
-		//tecla = TeclaPulsada(); //DESCOMENTAR PARA TECLA IZQUIERDA POR ENCUESTA
+		tecla = TeclaPulsada(); //DESCOMENTAR PARA TECLA IZQUIERDA POR ENCUESTA
 
     } // while
 
@@ -157,7 +157,7 @@ void estadoInicio() {
 void estadoPartida() {
 	if(!isGameOver()) {
 		printTime(21, 2, timer);
-		consumePlayerInput(); //COMENTAR PARA TECLA IZQUIERDA POR ENCUESTA
+		//consumePlayerInput(); //COMENTAR PARA TECLA IZQUIERDA POR ENCUESTA
 		spriteSpawns();
 		movePlayerSprite();
 		moveSprites();
