@@ -28,6 +28,14 @@ int lives = MAX_LIFES;
 Pickup pickup;
 bool pickupCreated = false;
 
+void createPlayerSprite(int x, int y) {
+	MostrarSobre(x, y);
+}
+
+void deletePlayerSprite() {
+	hideSprite(PLAYER_SPRITE);
+}
+
 void createSprite(int index, int x, int y) {
 	MostrarBillete(index, x, y);
 	numberSprites++;

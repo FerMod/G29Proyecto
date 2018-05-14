@@ -19,6 +19,9 @@ typedef struct {
 	bool isFull;
 } Heart;
 
+void createPlayerSprite(int x, int y);
+void deletePlayerSprite();
+
 void createSprite(int index, int x, int y);
 void deleteSprite(int index);
 
