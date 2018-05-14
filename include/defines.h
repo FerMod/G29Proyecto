@@ -81,7 +81,8 @@ void BorrarSobre(int x, int y);
 void showHeart(int index, int x, int y, bool isFull);
 void deleteHeart(int index);
 
-int getRandValue(int min, int max);
+long getRandomValueBetween(long min, long max);
+long getRandomValue(long max);
 
 int getScore();
 void setScore(int num);

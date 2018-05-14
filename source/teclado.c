@@ -44,8 +44,7 @@ void debugPressedKey(char *key, char *type) {
 void IntTec() {
 	if(estado == PARTIDA) {
 		switch(TeclaPulsada()) {
-			case B:
-				printFinalScore();				
+			case B:			
 				setGameState(FIN_PARTIDA);
 				break;
 			case IZQUIERDA:

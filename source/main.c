@@ -19,7 +19,6 @@ dovoto y otro de Jaeden Amero
 #include "screenText.h"
 
 #include "spriteManager.h"
-// #include "player.h"
 
 //---------------------------------------------------
 // Funciones
@@ -137,7 +136,7 @@ int main() {
 		}
 
 		swiWaitForVBlank(); // Halt a thread until the next vertical blank occurs.
-		tecla = TeclaPulsada(); //COMENTAR PARA TECLA IZQUIERDA POR ENCUESTA
+		//tecla = TeclaPulsada(); //DESCOMENTAR PARA TECLA IZQUIERDA POR ENCUESTA
 
     } // while
 
@@ -158,7 +157,7 @@ void estadoInicio() {
 void estadoPartida() {
 	if(!isGameOver()) {
 		printTime(21, 2, timer);
-		//consumePlayerInput(); //DESCOMENTAR PARA TECLA IZQUIERDA POR ENCUESTA
+		consumePlayerInput(); //COMENTAR PARA TECLA IZQUIERDA POR ENCUESTA
 		spriteSpawns();
 		movePlayerSprite();
 		moveSprites();
@@ -218,16 +217,19 @@ void setGameState(int newState) {
 			consoleClear();
 			printHeader();
 			ticks = 0;
+			timer = 0;
 			score = 0;
 			spawnedMoney = 0;
 			pickedUpMoney = 0;
 			setLives(MAX_LIFES);
 			createHearts();
 			resetDifficulty();
-			MostrarSobre(120, 172); // Spawn player		
+			createPlayerSprite(120, 172); // Spawn player
 			break;
 		case FIN_PARTIDA:
 			clearSprites();
+			deletePlayerSprite(); // Despawn player
+			consoleClear();
 			printFinalScore();
 			break;
 		case FIN:
@@ -278,8 +280,30 @@ int getScore() {
 	return score;
 }
 
-int getRandValue(int min, int max) {
-	return (rand() % (max-min)) + min;
+long getRandomValueBetween(long min, long max) {
+	return min + getRandomValue(max - min);
+}
+
+/*
+Source: https://stackoverflow.com/questions/2509679/how-to-generate-a-random-integer-number-from-within-a-range
+
+Assumes 0 <= max <= RAND_MAX
+Returns in the closed interval [0, max]
+*/
+long getRandomValue(long max) {
+
+	unsigned long numBins = (unsigned long) max + 1; // max <= RAND_MAX < ULONG_MAX, so this is okay.
+	unsigned long numRand = (unsigned long) RAND_MAX + 1;
+	unsigned long binSize = numRand / numBins;
+	unsigned long defect = numRand % numBins;
+
+	long x;
+	do {
+		x = rand();
+	} while (numRand - defect <= (unsigned long)x); // This is carefully written not to overflow
+
+	// Truncated division is intentional
+	return x/binSize;
 }
 
 int getSpanwedMoney() {

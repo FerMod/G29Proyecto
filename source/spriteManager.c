@@ -28,6 +28,14 @@ int lives = MAX_LIFES;
 Pickup pickup;
 bool pickupCreated = false;
 
+void createPlayerSprite(int x, int y) {
+	MostrarSobre(x, y);
+}
+
+void deletePlayerSprite() {
+	hideSprite(PLAYER_SPRITE);
+}
+
 void createSprite(int index, int x, int y) {
 	MostrarBillete(index, x, y);
 	numberSprites++;
@@ -74,18 +82,18 @@ void createPickup() {
 
 	// Blue shell effect
 	// Less lives, gives more healing chances
- 	if(!pickupCreated && getRandValue(0, 100) <= 5 * (MAX_LIFES - getLives()) ) {
+ 	if(!pickupCreated && getRandomValueBetween(1, 100) <= 5 * (MAX_LIFES - getLives()) ) {
 		pickup.index = MAX_MONEY_SPRITES;
 		pickup.type = HEALTH;				
-		showPickup(pickup.index, getRandValue(8, 240), 0, pickup.type);
+		showPickup(pickup.index, getRandomValueBetween(8, 240), 0, pickup.type);
 		pickupCreated = true;
 
 	}
 
-	if(!pickupCreated && getRandValue(0, 100) <= 5) {
+	if(!pickupCreated && getRandomValueBetween(1, 100) <= 5) {
 		pickup.index = MAX_MONEY_SPRITES;
 		pickup.type = CLEAR;				
-		showPickup(pickup.index, getRandValue(8, 240), 0, pickup.type);
+		showPickup(pickup.index, getRandomValueBetween(8, 240), 0, pickup.type);
 		pickupCreated = true;
 	}
 
@@ -101,6 +109,7 @@ void clearMoneySprites() {
 	for (i = 0; i < maxSpriteSpawns; i++) {				
 		deleteSprite(i);
 		decreaseSpawnedMoney();
+		increaseScore();
 	}
 	numberSprites = 0;
 }
@@ -155,7 +164,7 @@ void moveMoney() {
 			int x = spriteEntry->x;
 
 			// Move random to the left or right, to give more 'leaf' sensation
-			switch(getRandValue(0, 2)) {
+			switch(getRandomValue(1)) {
 				case 0:
 					spriteEntry->x += 4; 
 					break;
@@ -218,7 +227,7 @@ void spriteSpawns(){
 		SpriteEntry* spriteEntry = &oamMain.oamMemory[i];
 		if(spriteEntry->isHidden) {
 			spawnScheduled = false;
-			createSprite(i, getRandValue(8, 240), 0);
+			createSprite(i, getRandomValueBetween(8, 240), 0);
 			createPickup();
 		}
 	}

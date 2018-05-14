@@ -58,9 +58,9 @@ void printHeader() {
 
 void printFinalScore() {
 	consoleClear();
-	iprintf("\x1b[05;00H  +--------------------------+  ");
+	iprintf("\x1b[05;00H\x1b[39m  +--------------------------+  ");
 	iprintf("\x1b[06;00H  |     \x1b[41mFin de Partida\x1b[39m       |  ");
-	iprintf("\x1b[07;00H  +--------------------------+  ");
+	iprintf("\x1b[07;00H\x1b[39m  +--------------------------+  ");
 	
 	iprintf("\x1b[10;02H\x1b[43mPuntuacion Final:\x1b[39m");
 	iprintf("\x1b[11;02H\x1b[43m%04d\x1b[39m", getScore());
