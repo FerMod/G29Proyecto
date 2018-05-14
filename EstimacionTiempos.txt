@@ -1,5 +1,0 @@
-Diseño de la solucion:	30min
-Programación:		12h
-Desarrollo y pruebas:	2h
-
-Total: 			14h 30min
